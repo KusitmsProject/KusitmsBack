@@ -1,0 +1,32 @@
+
+
+
+spring:
+  config:
+    import:
+      - application-aws.yml
+
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+
+
+server:
+error:
+include-stacktrace: always
+include-message: always
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+        type: trace
+
+jwt:
+secret:
