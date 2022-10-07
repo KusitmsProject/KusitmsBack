@@ -1,6 +1,0 @@
-spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://jungmindb.c7pyd26tifkr.ap-northeast-2.rds.amazonaws.com:3306/Kusitms?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: master
-    password: JjungminLee0964
