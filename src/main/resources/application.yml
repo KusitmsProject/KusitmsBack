@@ -1,25 +1,31 @@
-
-
-
 spring:
   config:
     import:
       - application-aws.yml
 
-
   jpa:
-    show-sql: true
+    open-in-view: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update # create, update, none
+      naming:
+        #entity만들때, 변수명 그대로 데이터베이스 필드에 넣어주겠다.
+        #만약, org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy 전략을 사용하겠다고 하면,
+        #entity에서 변수명을 myEmail 이라고 하면, DB에 myEmail이 아닌 my_email로 만들어짐.
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      use-new-id-generator-mappings: false #jpa 기본 numbering 전략을 따라가지 않겠다.
     properties:
       hibernate:
+        show_sql: true
         format_sql: true
-
+        use_sql_comments: true #querydsl jpql 보기
 
 server:
-error:
-include-stacktrace: always
-include-message: always
+  port: 8081
+  servlet:
+    context-path: /
+    encoding:
+      charset: utf-8
+      enabled: true
 
 logging:
   level:
