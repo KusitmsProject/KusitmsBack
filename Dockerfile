@@ -1,6 +1,6 @@
 # JDK11 이미지 사용
 FROM openjdk:11-jdk
-
+EXPOSE 8081
 VOLUME /tmp
 
 # JAR_FILE 변수에 값을 저장
