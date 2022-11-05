@@ -36,6 +36,17 @@ dependencies {
 		exclude group: "org.hamcrest", module: "hamcrest-core"
 	}
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+	// jackson
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
+
+	// gson
+	implementation 'com.google.code.gson:gson:2.9.1'
+
+	// json-simple
+	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+
+
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
 }
 
 tasks.named('test') {
