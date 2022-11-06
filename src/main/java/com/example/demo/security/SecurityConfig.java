@@ -1,7 +1,7 @@
 package com.example.demo.security;
 
-import com.example.demo.config.JwtAuthenticationFilter;
-import com.example.demo.jwt.JwtTokenProvider;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,13 +14,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final JwtTokenProvider jwtTokenProvider;
 
-    public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
+
 
     @Bean
     @Override
@@ -50,12 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/swagger-ui/**").permitAll() // 가입 및 인증 주소는 누구나 접근가능
                 .antMatchers("/test").hasAnyRole("USER", "ADMIN")
                 .anyRequest().hasRole("USER") // 그외 나머지 요청은 모두 인증된 회원만 접근 가능
-                .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-                        UsernamePasswordAuthenticationFilter.class); // JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 전에 넣는다
-        // + 토큰에 저장된 유저정보를 활용하여야 하기 때문에 CustomUserDetailService 클래스를 생성합니다.
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
+                .and();
 
     }
 }

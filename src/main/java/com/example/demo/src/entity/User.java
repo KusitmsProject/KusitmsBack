@@ -26,6 +26,7 @@ public class User implements UserDetails {
     private Long kakaoId;
 
     private String kakaoNickname;
+    private String password;
     @Email
     @Column(nullable = false)
     private String kakaoEmail;
@@ -41,9 +42,10 @@ public class User implements UserDetails {
 
 
     @Builder
-    public User(Long userIdx,Long kakaoId,String profileImgUrl,String kakaoNickname,String kakaoEmail,String gender){
+    public User(Long userIdx,Long kakaoId,String password,String profileImgUrl,String kakaoNickname,String kakaoEmail,String gender){
         this.userIdx=userIdx;
         this.kakaoId=kakaoId;
+        this.password=password;
         this.profileImgUrl=profileImgUrl;
         this.kakaoNickname=kakaoNickname;
         this.kakaoEmail=kakaoEmail;
