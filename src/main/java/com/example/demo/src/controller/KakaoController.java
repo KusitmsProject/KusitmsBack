@@ -1,7 +1,7 @@
 package com.example.demo.src.controller;
 
 import com.example.demo.src.dto.GetUserDto;
-import com.example.demo.dto.response.BaseResponse;
+import com.example.demo.src.dto.response.BaseResponse;
 import com.example.demo.src.service.KakaoService;
 import com.example.demo.src.service.UserService;
 import com.example.demo.src.service.KakaoService;
@@ -26,7 +26,7 @@ public class KakaoController {
     private UserService userService;
 
     @Operation(summary = "카카오 로그인(테스트)", description = "/bring/login?code={인가코드}")
-    @GetMapping(value="/login")
+    @GetMapping(value="/kakaoLogin")
     public BaseResponse<GetUserDto> login(@RequestParam("code") String code) {
         String access_Token = kakaoService.getAccessToken(code);
         System.out.println("controller access_token : " + access_Token);
