@@ -20,7 +20,7 @@ public class SearchTrack {
 
     public static Paging<Track> searchTracks(String accessToken,String track) {
 
-        System.out.println("searchTrack");
+
 
         SpotifyApi spotifyApi = new SpotifyApi.Builder()
                 .setAccessToken(accessToken)
