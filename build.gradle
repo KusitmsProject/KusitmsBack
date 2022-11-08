@@ -47,6 +47,9 @@ dependencies {
 
 
 	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+
+	//spotify
+	implementation 'se.michaelthelin.spotify:spotify-web-api-java:7.2.2'
 }
 
 tasks.named('test') {
