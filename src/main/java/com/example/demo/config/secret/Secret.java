@@ -11,4 +11,12 @@ public class Secret {
     public static String client_Secret="T88sqeJd9hEimCgHFTulOpat4l303FGH";
     public static String redirect_URI="http://localhost:8080/bring/kakaoLogin";
 
+    // 스포티파이 client id
+
+    public static final String spotify_client_id="4a7614d9a7eb451092ae4f3f803192f6";
+
+    // 스포티파이 client secret
+
+    public static final String spotify_client_secret="5ae717824cc6454f85f1673364ab4178";
+
 }
