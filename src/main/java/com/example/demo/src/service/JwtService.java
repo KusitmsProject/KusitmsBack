@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import java.util.Date;
 
-import static com.example.demo.dto.response.BaseResponseStatus.EMPTY_JWT;
-import static com.example.demo.dto.response.BaseResponseStatus.INVALID_JWT;
+import static com.example.demo.config.BaseResponseStatus.EMPTY_JWT;
+import static com.example.demo.config.BaseResponseStatus.INVALID_JWT;
 
 @Service
 public class JwtService {

@@ -3,7 +3,7 @@ package com.example.demo.src.controller;
 
 
 import com.example.demo.src.dto.GetSpotifyDto;
-import com.example.demo.src.dto.response.BaseResponse;
+import com.example.demo.config.BaseResponse;
 import com.example.demo.src.entity.Music;
 import com.example.demo.src.service.MusicService;
 import com.example.demo.src.spotify.SearchTrack;
