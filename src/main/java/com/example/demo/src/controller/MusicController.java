@@ -67,8 +67,6 @@ public class MusicController {
 
         return new BaseResponse<>(musicService.searchLyrics(trackid));
 
-
-
     }
 
 

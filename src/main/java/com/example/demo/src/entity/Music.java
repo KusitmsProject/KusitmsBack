@@ -5,7 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
+
 
 @Entity
 @Getter
@@ -24,6 +26,7 @@ public class Music {
 
 
 
+
     @Builder
     public Music(String trackIdx,String track,String artist){
 
@@ -32,6 +35,7 @@ public class Music {
         this.artist=artist;
 
     }
+
 
 
     public Music() {

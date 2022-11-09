@@ -15,7 +15,7 @@ spring:
   jpa:
     open-in-view: true
     hibernate:
-      ddl-auto: create-drop # create, update, none
+      ddl-auto: update # create, update, none
       naming:
         #entity만들때, 변수명 그대로 데이터베이스 필드에 넣어주겠다.
         #만약, org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy 전략을 사용하겠다고 하면,
