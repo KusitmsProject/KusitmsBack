@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/bring")
+@RequestMapping(value = "/bring",produces = "application/json;charset=UTF-8")
 public class MusicController {
 
 
