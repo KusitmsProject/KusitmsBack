@@ -1,7 +1,7 @@
 package com.example.demo.src.entity;
 
 import com.example.demo.src.utils.StringArrayConverter;
-import lombok.Builder;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -11,6 +11,12 @@ import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
 
+@Getter @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "POST")
 public class Post extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,8 +35,9 @@ public class Post extends BaseTimeEntity {
 
     private String emotion; // 감정 이모티콘
 
-    @Convert(converter = StringArrayConverter.class)
-    private List<String> weather; // 날씨 이모티콘
+    private String weather;
+//    @Convert(converter = StringArrayConverter.class)
+//    private List<String> weather; // 날씨 이모티콘
 
     private String season; // 계절 이모티콘
 
@@ -49,8 +56,9 @@ public class Post extends BaseTimeEntity {
     private String record; // 그때의 기록
 
     // 함께 한 사람 리스트
-    @Convert(converter = StringArrayConverter.class)
-    private List<String> friendList;
+    private String friendList;
+//    @Convert(converter = StringArrayConverter.class)
+//    private List<String> friendList;
 
     private Integer options; // 그때의 나인지 오늘의 나인지
 

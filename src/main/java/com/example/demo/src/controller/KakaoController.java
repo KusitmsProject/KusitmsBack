@@ -1,9 +1,7 @@
 package com.example.demo.src.controller;
 
 import com.example.demo.src.dto.GetUserDto;
-import com.example.demo.src.dto.response.BaseResponse;
-import com.example.demo.src.service.KakaoService;
-import com.example.demo.src.service.UserService;
+import com.example.demo.config.BaseResponse;
 import com.example.demo.src.service.KakaoService;
 import com.example.demo.src.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;

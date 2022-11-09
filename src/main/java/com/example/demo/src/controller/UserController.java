@@ -3,13 +3,11 @@ package com.example.demo.src.controller;
 import com.example.demo.src.dto.GetUserDto;
 import com.example.demo.src.dto.PostUserDto;
 import com.example.demo.src.dto.response.BaseException;
-import com.example.demo.src.dto.response.BaseResponse;
+import com.example.demo.config.BaseResponse;
 import com.example.demo.src.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
 
 @RestController
 @RequestMapping("/bring")

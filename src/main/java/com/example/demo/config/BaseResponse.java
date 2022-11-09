@@ -1,12 +1,13 @@
-package com.example.demo.src.dto.response;
+package com.example.demo.config;
 
+import com.example.demo.config.BaseResponseStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import static com.example.demo.dto.response.BaseResponseStatus.SUCCESS;
+import static com.example.demo.config.BaseResponseStatus.SUCCESS;
 
 
 @Getter
@@ -29,7 +30,7 @@ public class BaseResponse<T> {//BaseResponse 객체를 사용할때 성공, 실�
     }
 
     // 요청에 실패한 경우
-    public BaseResponse(com.example.demo.dto.response.BaseResponseStatus status) {
+    public BaseResponse(BaseResponseStatus status) {
         this.isSuccess = status.isSuccess();
         this.message = status.getMessage();
         this.code = status.getCode();

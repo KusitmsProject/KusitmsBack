@@ -1,16 +1,14 @@
 package com.example.demo.src.service;
 
 import com.example.demo.config.secret.Secret;
+import com.example.demo.src.repository.UserRepository;
 import com.example.demo.src.utils.AES128;
 
-import com.example.demo.repository.UserRepository;
 import com.example.demo.src.dto.GetUserDto;
 import com.example.demo.src.dto.PostUserDto;
 import com.example.demo.src.dto.response.BaseException;
 import com.example.demo.src.entity.User;
-import io.jsonwebtoken.Jwt;
 import lombok.Builder;
-import org.hibernate.validator.internal.util.stereotypes.Lazy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,11 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 
-import static com.example.demo.dto.response.BaseResponseStatus.PASSWORD_ENCRYPTION_ERROR;
+import static com.example.demo.config.BaseResponseStatus.PASSWORD_ENCRYPTION_ERROR;
 
 @Service
 public class UserService implements UserDetailsService {
-    private final com.example.demo.repository.UserRepository userRepository;
+    private final UserRepository userRepository;
     private final JwtService jwtService;
 
 
