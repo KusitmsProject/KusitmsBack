@@ -76,6 +76,7 @@ public class MusicController {
 
 
     //유튜브 videoId 받아오는 api
+    @Operation(summary = "유튜브 videoID 받아오기  ", description = "/bring/spotify/lyrics?trackid={스포티파이trackIdx}")
     @GetMapping("/youtube")
     public BaseResponse<List<GetYouTubeRes>>searchVideoId(@RequestParam(value="track")String track,@RequestParam(value="artist")String artist) {
 
