@@ -1,9 +1,9 @@
-package com.example.demo.src.dto;
+package com.example.demo.src.dto.request;
 
 import lombok.Data;
 
 @Data
-public class PostUserDto {
+public class PostUserReq {
     private Long kakao_id;
     private String kakao_nickname;
     private String password;

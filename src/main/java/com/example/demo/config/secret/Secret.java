@@ -19,4 +19,7 @@ public class Secret {
 
     public static final String spotify_client_secret="5ae717824cc6454f85f1673364ab4178";
 
+
+    // 유튜브 api key
+    public static final String youtube_api="AIzaSyBrduYFB20tI77ZEGSHsh6gC0tZEhtHR7c";
 }

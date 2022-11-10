@@ -1,10 +1,10 @@
-package com.example.demo.src.dto;
+package com.example.demo.src.dto.response;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class GetUserDto {
+public class PostUserRes {
 
     private Long userIdx;
     private Long kakao_id;
@@ -16,7 +16,7 @@ public class GetUserDto {
 
 
     @Builder
-    public GetUserDto(Long userIdx,Long kakao_id,String kakao_nickname,String profile_img_url,String gender,String jwt){
+    public PostUserRes(Long userIdx, Long kakao_id, String kakao_nickname, String profile_img_url, String gender, String jwt){
         this.userIdx=userIdx;
         this.kakao_id=kakao_id;
         this.kakao_nickname=kakao_nickname;

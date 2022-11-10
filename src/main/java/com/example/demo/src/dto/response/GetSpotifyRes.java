@@ -1,4 +1,4 @@
-package com.example.demo.src.dto;
+package com.example.demo.src.dto.response;
 
 
 import com.example.demo.src.entity.Music;
@@ -7,16 +7,16 @@ import lombok.Data;
 
 @Data
 @Builder
-public class GetSpotifyDto {
+public class GetSpotifyRes {
 
     private String track;
     private String trackIdx;
     private String artist;
 
 
-    public static GetSpotifyDto getSpotifyDto(Music music){
+    public static GetSpotifyRes getSpotifyDto(Music music){
 
-        return GetSpotifyDto.builder()
+        return GetSpotifyRes.builder()
                 .track(music.getTrack())
                 .trackIdx(music.getTrackIdx())
                 .artist(music.getArtist())
