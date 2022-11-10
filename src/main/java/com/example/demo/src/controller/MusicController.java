@@ -2,7 +2,7 @@ package com.example.demo.src.controller;
 
 
 
-import com.example.demo.src.dto.GetSpotifyDto;
+import com.example.demo.src.dto.response.GetSpotifyRes;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.src.entity.Music;
 import com.example.demo.src.service.MusicService;
@@ -51,11 +51,11 @@ public class MusicController {
 
     @Operation(summary = "track,trackIdx,artist만 페이징 개수만큼 ", description = "/bring/spotify/track?track={track이름}")
     @GetMapping("/spotify/track")
-    public BaseResponse<List<GetSpotifyDto>> parsingSearchTrack(@RequestParam("track")String track) throws IOException {
+    public BaseResponse<List<GetSpotifyRes>> parsingSearchTrack(@RequestParam("track")String track) throws IOException {
 
         List<Music> musicList=musicService.parsingSearchTrack(track);
-        List<GetSpotifyDto>getSpotifyDtos=musicList.stream()
-                .map(GetSpotifyDto::getSpotifyDto).collect(Collectors.toList());
+        List<GetSpotifyRes>getSpotifyDtos=musicList.stream()
+                .map(GetSpotifyRes::getSpotifyDto).collect(Collectors.toList());
         return new BaseResponse<>(getSpotifyDtos);
 
     }

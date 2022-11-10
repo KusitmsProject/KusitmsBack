@@ -1,6 +1,6 @@
 package com.example.demo.src.controller;
 
-import com.example.demo.src.dto.GetUserDto;
+import com.example.demo.src.dto.response.PostUserRes;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.src.service.KakaoService;
 import com.example.demo.src.service.UserService;
@@ -25,13 +25,13 @@ public class KakaoController {
 
     @Operation(summary = "카카오 로그인(테스트)", description = "/bring/login?code={인가코드}")
     @GetMapping(value="/kakaoLogin")
-    public BaseResponse<GetUserDto> login(@RequestParam("code") String code) {
+    public BaseResponse<PostUserRes> login(@RequestParam("code") String code) {
         String access_Token = kakaoService.getAccessToken(code);
         System.out.println("controller access_token : " + access_Token);
         HashMap<String, Object> userInfo = kakaoService.getUserInfo(access_Token);
         System.out.println("login Controller : " + userInfo);
         Long id=userService.saveKakaoUser(userInfo);
-        GetUserDto getUserDto=userService.findUser(id);
+        PostUserRes getUserDto=userService.findUser(id);
 
         return new BaseResponse<>(getUserDto);
 

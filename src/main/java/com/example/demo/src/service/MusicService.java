@@ -1,7 +1,6 @@
 package com.example.demo.src.service;
 
 
-import com.example.demo.src.dto.GetSpotifyDto;
 import com.example.demo.src.entity.Music;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

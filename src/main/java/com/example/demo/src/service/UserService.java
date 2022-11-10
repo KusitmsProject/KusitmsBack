@@ -4,8 +4,8 @@ import com.example.demo.config.secret.Secret;
 import com.example.demo.src.repository.UserRepository;
 import com.example.demo.src.utils.AES128;
 
-import com.example.demo.src.dto.GetUserDto;
-import com.example.demo.src.dto.PostUserDto;
+import com.example.demo.src.dto.response.PostUserRes;
+import com.example.demo.src.dto.request.PostUserReq;
 import com.example.demo.src.dto.response.BaseException;
 import com.example.demo.src.entity.User;
 import lombok.Builder;
@@ -32,7 +32,7 @@ public class UserService implements UserDetailsService {
 
     }
 
-    public long saveUser(PostUserDto postUserDto) throws BaseException {
+    public long saveUser(PostUserReq postUserDto) throws BaseException {
 
         User user = userRepository.findByKakaoEmail(postUserDto.getKakao_email());
 
@@ -91,14 +91,14 @@ public class UserService implements UserDetailsService {
     }
 
     @Builder
-    public GetUserDto findUser(Long userIdx){
+    public PostUserRes findUser(Long userIdx){
 
         User user=userRepository.findByUserIdx(userIdx);
         String jwt= jwtService.createJwt(userIdx);
         System.out.println(jwt);
 
 
-        return GetUserDto.builder()
+        return PostUserRes.builder()
                 .userIdx(user.getUserIdx())
                 .kakao_id(user.getKakaoId())
                 .kakao_nickname(user.getKakaoNickname())
