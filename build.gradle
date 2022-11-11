@@ -16,6 +16,7 @@ configurations {
 
 repositories {
 	mavenCentral()
+	google()
 }
 
 dependencies {
@@ -51,10 +52,14 @@ dependencies {
 	//spotify
 	implementation 'se.michaelthelin.spotify:spotify-web-api-java:7.2.2'
 
+
 	//youtube
-	//implementation 'com.google.api-client:google-api-client:1.23.0'
-	//implementation 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
-	//implementation 'com.google.apis:google-api-services-youtube:v3-222-1.25.0'
+	implementation 'com.google.api-client:google-api-client:1.23.0'
+	implementation 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
+	implementation 'com.google.apis:google-api-services-youtube:v3-rev222-1.25.0'
+
+
+
 }
 
 tasks.named('test') {

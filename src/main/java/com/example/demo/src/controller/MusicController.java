@@ -4,8 +4,10 @@ package com.example.demo.src.controller;
 
 import com.example.demo.src.dto.response.GetSpotifyRes;
 import com.example.demo.config.BaseResponse;
+import com.example.demo.src.dto.response.GetYouTubeRes;
 import com.example.demo.src.entity.Music;
 import com.example.demo.src.service.MusicService;
+import com.example.demo.src.service.YoutubeService;
 import com.example.demo.src.spotify.SearchTrack;
 import com.example.demo.src.spotify.SpotifyToken;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,10 +36,13 @@ public class MusicController {
 
     private final SearchTrack searchTrack;
 
-    public MusicController(SpotifyToken spotifyToken, MusicService musicService, SearchTrack searchTrack) {
+    private final YoutubeService youtubeService;
+
+    public MusicController(SpotifyToken spotifyToken, MusicService musicService, SearchTrack searchTrack, YoutubeService youtubeService) {
         this.spotifyToken = spotifyToken;
         this.musicService = musicService;
         this.searchTrack = searchTrack;
+        this.youtubeService = youtubeService;
     }
 
     @Operation(summary = "spotify원본 api", description = "/bring/spotify?track={track이름}")
@@ -71,8 +76,15 @@ public class MusicController {
 
 
     //유튜브 videoId 받아오는 api
+    @Operation(summary = "유튜브 videoID 받아오기  ", description = "/bring/spotify/lyrics?trackid={스포티파이trackIdx}")
+    @GetMapping("/youtube")
+    public BaseResponse<List<GetYouTubeRes>>searchVideoId(@RequestParam(value="track")String track,@RequestParam(value="artist")String artist) {
 
+        String searchQuery = track.concat(" ").concat(artist);
+        List<GetYouTubeRes> getYouTubeResList = youtubeService.youTubeSearch(searchQuery, 5);
 
+        return new BaseResponse<>(getYouTubeResList);
+    }
 
 
     @GetMapping("/spotify/access")
