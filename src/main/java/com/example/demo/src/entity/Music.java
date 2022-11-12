@@ -13,7 +13,7 @@ import java.util.List;
 
 @Entity
 @Getter
-
+@Table(name="Music")
 public class Music {
 
     @Id
@@ -23,15 +23,15 @@ public class Music {
     @OneToMany(mappedBy = "music")
     private List<Post>posts=new ArrayList<>();
 
-    private String trackIdx;
-
     private String track;
 
     private String artist;
 
+    private String trackIdx;
+
     private String videoIdx;
 
-    private String lyrics;
+
     @Column(name="created",nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp createdAt;
 
@@ -45,11 +45,11 @@ public class Music {
 
 
     @Builder
-    public Music(String trackIdx,String track,String artist){
+    public Music(String track,String artist,String videoIdx){
 
-        this.trackIdx=trackIdx;
         this.track=track;
         this.artist=artist;
+        this.videoIdx=videoIdx;
 
     }
 
@@ -58,4 +58,6 @@ public class Music {
     public Music() {
 
     }
+
+
 }

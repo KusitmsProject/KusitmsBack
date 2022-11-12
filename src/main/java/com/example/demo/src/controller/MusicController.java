@@ -45,6 +45,9 @@ public class MusicController {
         this.youtubeService = youtubeService;
     }
 
+
+
+
     @Operation(summary = "spotify원본 api", description = "/bring/spotify?track={track이름}")
     @GetMapping("/spotify")
     public BaseResponse<Paging<Track>>searchTrack(@RequestParam("track")String track){
@@ -76,12 +79,12 @@ public class MusicController {
 
 
     //유튜브 videoId 받아오는 api
-    @Operation(summary = "유튜브 videoID 받아오기  ", description = "/bring/spotify/lyrics?trackid={스포티파이trackIdx}")
+    @Operation(summary = "유튜브 videoID 받아오기  ", description = "/bring/youtube?track={노래이름}&artist={가수이름}")
     @GetMapping("/youtube")
     public BaseResponse<List<GetYouTubeRes>>searchVideoId(@RequestParam(value="track")String track,@RequestParam(value="artist")String artist) {
 
         String searchQuery = track.concat(" ").concat(artist);
-        List<GetYouTubeRes> getYouTubeResList = youtubeService.youTubeSearch(searchQuery, 5);
+        List<GetYouTubeRes> getYouTubeResList = youtubeService.youTubeSearch(track,artist,searchQuery, 1);
 
         return new BaseResponse<>(getYouTubeResList);
     }
