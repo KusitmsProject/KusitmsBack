@@ -11,4 +11,8 @@ import org.springframework.stereotype.Repository;
 public interface MusicRepository extends JpaRepository<Music,Long> {
     public Music findByTrack(String track);
 
+    public Music findByArtist(String artist);
+
+
+
 }

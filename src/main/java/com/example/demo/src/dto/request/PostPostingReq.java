@@ -50,6 +50,9 @@ public class PostPostingReq {
     @ApiModelProperty(notes = "그때의 기록", example = "아 이때 젊었었는데")
     private String record; // 그때의 기록
 
+    @ApiModelProperty(notes = "노래 이름", example = "Hype Boy")
+    private String track; // 노래 이름
+
     // todo
     @ApiModelProperty(notes = "친구 리스트", example = "윤아 지원")
     @Type(type = "json")
