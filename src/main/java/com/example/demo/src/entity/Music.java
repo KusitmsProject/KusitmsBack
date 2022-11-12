@@ -27,6 +27,8 @@ public class Music {
 
     private String artist;
 
+
+    //지우지 말것
     private String trackIdx;
 
     private String videoIdx;
