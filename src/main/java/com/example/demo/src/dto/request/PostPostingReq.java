@@ -46,6 +46,9 @@ public class PostPostingReq {
     @ApiModelProperty(notes = "노래 이름", example = "Hype Boy")
     private String track; // 노래 이름
 
+    @ApiModelProperty(notes = "가수 이름", example = "Newjeans")
+    private String artist; // 가수 이름
+
     // todo
     @ApiModelProperty(notes = "친구 리스트", example = "윤아 지원")
     private List<String> friendList; // 함께 한 사람 리스트
