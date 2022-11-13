@@ -110,7 +110,7 @@ public class YoutubeService {
         //만약 track이 있다면 저장하지 않을 것
 
         Music trackRepo=musicRepository.findByTrack(track);
-               if(trackRepo==null){
+        if(trackRepo==null){
             musicRepository.save(music);
         }
 

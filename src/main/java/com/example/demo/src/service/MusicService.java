@@ -81,7 +81,13 @@ public class MusicService {
             System.out.println(artist);
             System.out.println(realTrack);
 
-           spotifyList.add(new Music(trackIdx,realTrack,artist) );
+            Music music=Music.builder()
+                            .trackIdx(trackIdx)
+                            .track(realTrack)
+                            .artist(artist)
+                            .build();
+
+           spotifyList.add(music);
 
 
 
