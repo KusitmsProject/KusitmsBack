@@ -34,6 +34,9 @@ public class PostPostingReq {
     @ApiModelProperty(notes = "선택한 한 줄 가사", example = "사랑인걸 사랑인걸")
     private String lyrics; // 가사
 
+    @ApiModelProperty(notes = "장소 별칭", example = "우리 집")
+    private String placeNickname; // 장소 별칭
+
     @ApiModelProperty(notes = "장소", example = "서울시 동작구 상도로 369")
     private String place; // 장소
 

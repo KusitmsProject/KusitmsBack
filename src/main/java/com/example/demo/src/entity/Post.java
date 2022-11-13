@@ -34,7 +34,6 @@ public class Post extends BaseTimeEntity {
 
     private String emotion; // 감정 이모티콘
 
-//    private String weather;
     @Column
     @Convert(converter = StringListConverter.class)
     private List<String> weather; // 날씨 이모티콘
@@ -43,14 +42,15 @@ public class Post extends BaseTimeEntity {
 
     private String lyrics; // 가사
 
-    private String place; // todo : 장소 수정
+    private String place; // 장소
+
+    private String placeNickname; // 장소 별칭
 
     private String imageUrl; // 그떄의 사진 url
 
     private String record; // 그때의 기록
 
     // 함께 한 사람 리스트
-//    private String friendList;
     @Column
     @Convert(converter = StringListConverter.class)
     private List<String> friendList;
