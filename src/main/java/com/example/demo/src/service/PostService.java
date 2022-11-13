@@ -27,18 +27,18 @@ public class PostService {
     }
 
     public PostPostingRes register(PostPostingReq postPostingReq) throws BaseException {
-        // todo : musicrepo에서 music 가져오기
         Post post = Post.builder()
                 .user(userRepository.findByUserIdx(postPostingReq.getUserIdx()))
                 .date(postPostingReq.getDate())
                 .emotion(postPostingReq.getEmotion())
                 .music(musicRepository.findByTrack(postPostingReq.getTrack()))
-//                .weather(postPostingReq.getWeather())
+                .weather(postPostingReq.getWeather())
                 .season(postPostingReq.getSeason())
+                .lyrics(postPostingReq.getLyrics())
                 .place(postPostingReq.getPlace())
                 .imageUrl(postPostingReq.getImageUrl())
                 .record(postPostingReq.getRecord())
-//                .friendList(postPostingReq.getFriendList())
+                .friendList(postPostingReq.getFriendList())
                 .options(postPostingReq.getOptions())
                 .build();
 

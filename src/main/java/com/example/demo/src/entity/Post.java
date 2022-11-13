@@ -1,11 +1,10 @@
 package com.example.demo.src.entity;
 
-import com.example.demo.src.utils.StringArrayConverter;
+import com.example.demo.src.utils.StringListConverter;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -35,19 +34,14 @@ public class Post extends BaseTimeEntity {
 
     private String emotion; // 감정 이모티콘
 
-    private String weather;
-//    @Convert(converter = StringArrayConverter.class)
-//    private List<String> weather; // 날씨 이모티콘
+//    private String weather;
+    @Column
+    @Convert(converter = StringListConverter.class)
+    private List<String> weather; // 날씨 이모티콘
 
     private String season; // 계절 이모티콘
 
-//    // todo : 장소 수정
-//    @Builder.Default
-//    private String regionIdx1 = "0000000000"; //지역 1
-//    @Builder.Default
-//    private String regionIdx2 = "0000000000"; //지역 2
-//    @Builder.Default
-//    private String regionIdx3 = "0000000000"; //지역 3
+    private String lyrics; // 가사
 
     private String place; // todo : 장소 수정
 
@@ -56,9 +50,10 @@ public class Post extends BaseTimeEntity {
     private String record; // 그때의 기록
 
     // 함께 한 사람 리스트
-    private String friendList;
-//    @Convert(converter = StringArrayConverter.class)
-//    private List<String> friendList;
+//    private String friendList;
+    @Column
+    @Convert(converter = StringListConverter.class)
+    private List<String> friendList;
 
     private Integer options; // 그때의 나인지 오늘의 나인지
 
