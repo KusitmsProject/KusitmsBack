@@ -41,13 +41,7 @@ public class Post extends BaseTimeEntity {
 
     private String season; // 계절 이모티콘
 
-//    // todo : 장소 수정
-//    @Builder.Default
-//    private String regionIdx1 = "0000000000"; //지역 1
-//    @Builder.Default
-//    private String regionIdx2 = "0000000000"; //지역 2
-//    @Builder.Default
-//    private String regionIdx3 = "0000000000"; //지역 3
+    private String lyrics; // 가사
 
     private String place; // todo : 장소 수정
 

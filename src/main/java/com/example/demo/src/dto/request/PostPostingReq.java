@@ -41,6 +41,9 @@ public class PostPostingReq {
     @ApiModelProperty(notes = "계절 이모지 유니코드", example = "0x1F425")
     private String season; // 계절 이모티콘
 
+    @ApiModelProperty(notes = "선택한 한 줄 가사", example = "사랑인걸 사랑인걸")
+    private String lyrics; // 가사
+
     @ApiModelProperty(notes = "장소", example = "서울시 동작구 상도로 369")
     private String place; // 장소
 
