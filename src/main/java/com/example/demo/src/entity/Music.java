@@ -46,9 +46,10 @@ public class Music {
 
 
 
-    @Builder
-    public Music(String track,String artist,String videoIdx){
 
+    @Builder
+    public Music(String trackIdx,String track,String artist,String videoIdx){
+        this.trackIdx=trackIdx;
         this.track=track;
         this.artist=artist;
         this.videoIdx=videoIdx;
