@@ -35,6 +35,7 @@ public class PostService {
                 .weather(postPostingReq.getWeather())
                 .season(postPostingReq.getSeason())
                 .lyrics(postPostingReq.getLyrics())
+                .placeNickname(postPostingReq.getPlaceNickname())
                 .place(postPostingReq.getPlace())
                 .imageUrl(postPostingReq.getImageUrl())
                 .record(postPostingReq.getRecord())
