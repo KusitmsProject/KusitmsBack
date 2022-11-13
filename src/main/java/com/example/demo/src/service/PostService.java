@@ -32,13 +32,13 @@ public class PostService {
                 .date(postPostingReq.getDate())
                 .emotion(postPostingReq.getEmotion())
                 .music(musicRepository.findByTrack(postPostingReq.getTrack()))
-//                .weather(postPostingReq.getWeather())
+                .weather(postPostingReq.getWeather())
                 .season(postPostingReq.getSeason())
                 .lyrics(postPostingReq.getLyrics())
                 .place(postPostingReq.getPlace())
                 .imageUrl(postPostingReq.getImageUrl())
                 .record(postPostingReq.getRecord())
-//                .friendList(postPostingReq.getFriendList())
+                .friendList(postPostingReq.getFriendList())
                 .options(postPostingReq.getOptions())
                 .build();
 

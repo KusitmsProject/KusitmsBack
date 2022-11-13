@@ -1,24 +1,14 @@
 package com.example.demo.src.dto.request;
 
-import com.example.demo.src.entity.Music;
-import com.example.demo.src.entity.User;
-import com.example.demo.src.utils.StringArrayConverter;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.time.LocalDate;
 import java.util.List;
-
-import static javax.persistence.FetchType.LAZY;
 
 @Builder
 @AllArgsConstructor
@@ -35,7 +25,7 @@ public class PostPostingReq {
     private String emotion; // 감정 이모티콘
 
     // todo
-    @ApiModelProperty(notes = "날씨 이모티콘 유니코드", example = "0x1F425")
+    @ApiModelProperty(notes = "날씨 이모티콘 코드 리스트", example = "SUNNY")
     private List<String> weather; // 날씨 이모티콘
 
     @ApiModelProperty(notes = "계절 이모지 유니코드", example = "0x1F425")
@@ -58,8 +48,7 @@ public class PostPostingReq {
 
     // todo
     @ApiModelProperty(notes = "친구 리스트", example = "윤아 지원")
-    @Type(type = "json")
-    private String friendList; // 함께 한 사람 리스트
+    private List<String> friendList; // 함께 한 사람 리스트
 
     @ApiModelProperty(notes = "그떄의 나 : 0, 오늘의 나 : 1", example = "윤아 지원")
     private Integer options; // 그때의 나인지 오늘의 나인지
