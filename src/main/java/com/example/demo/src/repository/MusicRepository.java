@@ -6,12 +6,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @EnableJpaRepositories
 public interface MusicRepository extends JpaRepository<Music,Long> {
-    public Music findByTrack(String track);
+    public List<Music> findByTrack(String track);
 
-    public Music findByArtist(String artist);
+    public List<Music> findByArtist(String artist);
+
+
 
 
 

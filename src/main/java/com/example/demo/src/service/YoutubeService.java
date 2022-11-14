@@ -107,10 +107,11 @@ public class YoutubeService {
                         .videoIdx(videoId)
                         .build();
 
-        //만약 track이 있다면 저장하지 않을 것
+        //만약 track이 있다면 (track의 사이즈가 0이 아니라면) 저장하지 않을 것
 
-        Music trackRepo=musicRepository.findByTrack(track);
-        if(trackRepo==null){
+        List<Music> trackRepo=musicRepository.findByTrack(track);
+        List<Music> artistRepo=musicRepository.findByArtist(artist);
+        if(trackRepo.size()==0||artistRepo.size()==0){
             musicRepository.save(music);
         }
 
