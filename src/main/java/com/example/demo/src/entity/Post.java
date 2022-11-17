@@ -1,10 +1,12 @@
 package com.example.demo.src.entity;
 
 import com.example.demo.src.utils.StringListConverter;
+import com.querydsl.core.types.EntityPath;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -57,4 +59,7 @@ public class Post extends BaseTimeEntity {
 
     private Integer options; // 그때의 나인지 오늘의 나인지
 
+    // localdate 으로 저장한 yyyy-MM-dd 저장
+    @Column(name="createdPost",nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDate createdPost;
 }
