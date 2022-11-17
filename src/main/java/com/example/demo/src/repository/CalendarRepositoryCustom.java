@@ -7,4 +7,8 @@ import java.util.List;
 public interface CalendarRepositoryCustom {
 
     List<Post> findByMonthAndYear(String startDate, String endDate,int options);
+
+    Post findByMonthYearDay(String startTime,String endTime,int options);
+
+
 }
