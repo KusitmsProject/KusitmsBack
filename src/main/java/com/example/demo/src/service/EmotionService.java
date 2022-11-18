@@ -34,19 +34,18 @@ public class EmotionService {
         List<GetSearchEmotionRes> result = new ArrayList<>();
 
         User user = userRepository.findByUserIdx(Long.parseLong(userIdx));
-
-        List<Post> test = postRepository.findAllByUserAndEmotion(user, emotion);
-        for(int i = 0; i < test.size(); i++){
+        List<Post> postList = postRepository.findAllByUserAndEmotion(user, emotion);
+        for(int i = 0; i < postList.size(); i++){
             // 해당 post의 가수, 제목 찾기
-            Music music = test.get(i).getMusic();
+            Music music = postList.get(i).getMusic();
 
             GetSearchEmotionRes getSearchEmotionRes = GetSearchEmotionRes.builder()
-                    .postIdx(test.get(i).getPostIdx())
+                    .postIdx(postList.get(i).getPostIdx())
                     .musicIdx(music.getMusicIdx())
-                    .date(test.get(i).getDate())
+                    .date(postList.get(i).getDate())
                     .artist(music.getArtist())
                     .track(music.getTrack())
-                    .options(test.get(i).getOptions())
+                    .options(postList.get(i).getOptions())
                     .build();
             result.add((getSearchEmotionRes));
         }
@@ -58,21 +57,52 @@ public class EmotionService {
 
         User user = userRepository.findByUserIdx(Long.parseLong(userIdx));
         Music music = musicRepository.findByMusicIdx(Long.parseLong(musicIdx));
-
-        List<Post> test = postRepository.findAllByUserAndMusic(user, music);
-        for(int i = 0; i < test.size(); i++){
+        List<Post> postList = postRepository.findAllByUserAndMusic(user, music);
+        for(int i = 0; i < postList.size(); i++){
             // 해당 post의 가수, 제목 찾기
             GetSearchTrackRes getSearchTrackRes = GetSearchTrackRes.builder()
-                    .postIdx(test.get(i).getPostIdx())
+                    .postIdx(postList.get(i).getPostIdx())
                     .musicIdx(music.getMusicIdx())
-                    .date(test.get(i).getDate())
+                    .date(postList.get(i).getDate())
                     .artist(music.getArtist())
                     .track(music.getTrack())
-                    .emotion(test.get(i).getEmotion())
-                    .options(test.get(i).getOptions())
+                    .emotion(postList.get(i).getEmotion())
+                    .options(postList.get(i).getOptions())
                     .build();
             result.add((getSearchTrackRes));
         }
+        return result;
+    }
+
+    public List<GetSearchTrackRes> search(String userIdx, String input) throws BaseException{
+        List<GetSearchTrackRes> result = new ArrayList<>();
+
+        User user = userRepository.findByUserIdx(Long.parseLong(userIdx)); // 유저 검색
+        List<Post> userPostList = postRepository.findAllByUser(user); // 해당 user post 검색
+        List<Music> musicList = musicRepository.findAllByArtistLikeOrTrackLike("%" + input + "%", "%" + input + "%"); // 음악, 아티스트 검색
+
+        for(int i = 0; i < musicList.size(); i++){
+            System.out.println("musicList = " + musicList.get(i).getMusicIdx());
+        }
+
+        // 해당 음악id와 post의 음악id 일치하면 추가
+        for(int i = 0; i < musicList.size(); i++){
+            for(int j = 0; j < userPostList.size(); j++){
+                if(musicList.get(i).getMusicIdx() == userPostList.get(j).getMusic().getMusicIdx()){
+                    GetSearchTrackRes getSearchTrackRes = GetSearchTrackRes.builder()
+                            .postIdx(userPostList.get(j).getPostIdx())
+                            .musicIdx(musicList.get(i).getMusicIdx())
+                            .artist(musicList.get(i).getArtist())
+                            .track(musicList.get(i).getTrack())
+                            .emotion(userPostList.get(j).getEmotion())
+                            .date(userPostList.get(j).getDate())
+                            .options(userPostList.get(j).getOptions())
+                            .build();
+                    result.add(getSearchTrackRes);
+                }
+            }
+        }
+
         return result;
     }
 }

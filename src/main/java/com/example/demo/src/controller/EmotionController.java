@@ -42,4 +42,15 @@ public class EmotionController {
         }
     }
 
+    @ApiOperation("감정보관함 노래 검색")
+    @GetMapping("/search")
+    public BaseResponse<List<GetSearchTrackRes>> search(@RequestParam(value = "userIdx") String userIdx, @RequestParam(value = "input") String input) {
+        try{
+            List<GetSearchTrackRes> getSearchTrackRes = emotionService.search(userIdx, input);
+            return new BaseResponse<>(getSearchTrackRes);
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
 }
