@@ -1,5 +1,6 @@
 package com.example.demo.src.repository;
 
+import com.example.demo.src.entity.Music;
 import com.example.demo.src.entity.Post;
 import com.example.demo.src.entity.User;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -15,6 +16,8 @@ import java.util.List;
 @EnableJpaRepositories
 public interface PostRepository extends JpaRepository<Post,Long> {
     public Post findByPostIdx(Long postIdx);
+
+    List<Post> findAllByUserAndMusic(User user, Music music);
 
     List<Post> findAllByUserAndEmotion(User user, String emotion);
 
