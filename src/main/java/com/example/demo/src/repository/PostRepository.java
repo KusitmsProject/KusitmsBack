@@ -17,6 +17,8 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post,Long> {
     public Post findByPostIdx(Long postIdx);
 
+    List<Post> findAllByUser(User user);
+
     List<Post> findAllByUserAndMusic(User user, Music music);
 
     List<Post> findAllByUserAndEmotion(User user, String emotion);
