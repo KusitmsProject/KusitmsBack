@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.Locale;
@@ -26,6 +27,18 @@ public class GetCalendarTodayRes {
                 .day(dd)
                 .dayOfWeek(dayText)
                 .imageURL(post.getImageUrl())
+                .build();
+    }
+
+    public static  GetCalendarTodayRes getCalendarTodayNonExist(LocalDate date){
+
+        String dd = date.format(DateTimeFormatter.ofPattern("dd"));
+        DayOfWeek dayOfWeek =date.getDayOfWeek();
+        String dayText=dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.US);
+        return GetCalendarTodayRes.builder()
+                .day(dd)
+                .dayOfWeek(dayText)
+                .imageURL(null)
                 .build();
     }
 }

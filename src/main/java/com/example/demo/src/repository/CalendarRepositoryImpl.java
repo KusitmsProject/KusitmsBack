@@ -30,6 +30,31 @@ public class CalendarRepositoryImpl implements  CalendarRepositoryCustom {
     @Autowired
     private JdbcTemplate template;
 
+
+    // 그때의 나 캘린더 뷰 데이터 있는지 없는지 조회
+    @Override
+    public int getMomentExist(String startTime,String endTime){
+        String sql="SELECT exists(select * from POST where (createdAt between ? and ?) and POST.options=0) ";
+        Object[] params={startTime,endTime};
+
+        return this.template.queryForObject(sql,params,int.class);
+
+    }
+
+    //오늘의 나 캘린더 뷰 데이터 있는지 없는지 조회
+
+    @Override
+    public int getTodayExist(String startTime,String endTime){
+        String sql="SELECT exists(select * from POST where (createdAt between ? and ?) and POST.options=1 )";
+        Object[] params={startTime,endTime};
+
+        return this.template.queryForObject(sql,params,int.class);
+
+    }
+
+
+
+    // 서로 다른 두 날짜 사이를 비교할 때 
     @Override
     public List<Post> findByMonthAndYear(String startDate, String endDate,int options){
         QPost post= QPost.post;
@@ -52,6 +77,8 @@ public class CalendarRepositoryImpl implements  CalendarRepositoryCustom {
 
 
     }
+    
+    // 하나의 날짜 조회, 그 안에서 시간이 00:00:00 부터 23:59:59까지
 
     @Override
 

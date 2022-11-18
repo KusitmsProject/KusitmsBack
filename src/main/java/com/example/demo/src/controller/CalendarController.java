@@ -30,12 +30,23 @@ public class CalendarController {
 
     // 캘린더뷰 조회
 
+
     // 캘린더뷰에 데이터 있는지 없는지 조회하는 API
-//    @GetMapping("/calendar/moment/exists")
-//    public BaseResponse<Post> getExist(@RequestParam(value="year")String year,@RequestParam(value="month") String month){
-//
-//        return new BaseResponse<>(post);
-//    }
+
+    // 쿼리에서 반환값이 0 이면 null을 세팅하고
+    // 아니면 imageURL을 뱉자
+    @GetMapping("/calendar/moment/exists")
+    public BaseResponse<List<GetCalendarMomentRes>> getMomentExist(@RequestParam(value="year")String year,@RequestParam(value="month") String month){
+
+        List<GetCalendarMomentRes>getMomentExistList=calendarService.getMomentExist(year,month);
+        return new BaseResponse<>(getMomentExistList);
+    }
+    @GetMapping("/calendar/today/exists")
+    public BaseResponse<List<GetCalendarTodayRes>> getTodayExist(@RequestParam(value="year")String year,@RequestParam(value="month") String month){
+
+        List<GetCalendarTodayRes>getTodayExistList=calendarService.getTodayExist(year,month);
+        return new BaseResponse<>(getTodayExistList);
+    }
 
     
     // 그때의 나
@@ -64,7 +75,7 @@ public class CalendarController {
     
     // 캘린더뷰 detail
 
-    // 그때의 나
+    // 그때의 나 detail
     @GetMapping("/calendar/moment/detail")
     public BaseResponse<GetCalendarMomentDetailRes>getCalendarMomentDetail(@RequestParam(value="year")String year,@RequestParam(value="month")String month,@RequestParam(value="day")String day){
         GetCalendarMomentDetailRes getCalendarMomentDetailRes=calendarService.getCalendarMomentDetail(year,month,day);
@@ -76,7 +87,7 @@ public class CalendarController {
 
 
 
-    // 오늘의 나
+    // 오늘의 나 detail
 
     @GetMapping("/calendar/today/detail")
     public BaseResponse <GetCalendarTodayDetailRes>getCalendarTodayDetail(@RequestParam(value="year")String year, @RequestParam(value="month")String month, @RequestParam(value="day")String day){
