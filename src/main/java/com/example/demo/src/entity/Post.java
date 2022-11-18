@@ -1,10 +1,14 @@
 package com.example.demo.src.entity;
 
 import com.example.demo.src.utils.StringListConverter;
+import com.querydsl.core.types.EntityPath;
+import com.sun.istack.NotNull;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -15,6 +19,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+
 @Table(name = "POST")
 public class Post extends BaseTimeEntity {
     @Id
@@ -57,4 +62,8 @@ public class Post extends BaseTimeEntity {
 
     private Integer options; // 그때의 나인지 오늘의 나인지
 
+    // localdate 으로 저장한 yyyy-MM-dd 저장
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDate createdPost;
 }
