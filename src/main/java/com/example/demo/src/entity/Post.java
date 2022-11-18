@@ -62,8 +62,5 @@ public class Post extends BaseTimeEntity {
 
     private Integer options; // 그때의 나인지 오늘의 나인지
 
-    // localdate 으로 저장한 yyyy-MM-dd 저장
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDate createdPost;
+
 }
