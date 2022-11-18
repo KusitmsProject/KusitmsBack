@@ -4,7 +4,6 @@ import com.example.demo.src.utils.StringListConverter;
 import com.querydsl.core.types.EntityPath;
 import com.sun.istack.NotNull;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;

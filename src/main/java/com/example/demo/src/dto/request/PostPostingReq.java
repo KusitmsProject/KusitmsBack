@@ -21,7 +21,7 @@ public class PostPostingReq {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date; // 추억 날짜
 
-    @ApiModelProperty(notes = "감정 이모지 유니코드", example = "0x1F425")
+    @ApiModelProperty(notes = "감정 이모지 코드(ANGRY, LOVELY, HAPPY, SAD, EXPLODE, TIRED)", example = "EXPLODE")
     private String emotion; // 감정 이모티콘
 
     // todo
