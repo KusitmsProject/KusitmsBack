@@ -64,13 +64,15 @@ public class CalendarRepositoryImpl implements  CalendarRepositoryCustom {
 
         LocalDate formattedStart= LocalDate.parse(startDate);
         LocalDate formattedEnd=LocalDate.parse(endDate);
+        LocalDateTime localStartTime=formattedStart.atTime(0,0,0);
+        LocalDateTime localEndTime=formattedEnd.atTime(23,59,59);
 
 
         return  queryFactory.select(post)
                 .from(post)
                 .where(
 
-                        post.options.eq(options), post.createdPost.between(formattedStart,formattedEnd)
+                        post.options.eq(options), post.createdAt.between(localStartTime,localEndTime)
                 )
                 .fetch();
 

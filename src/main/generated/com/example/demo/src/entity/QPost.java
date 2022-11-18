@@ -27,8 +27,6 @@ public class QPost extends EntityPathBase<Post> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
-    public final DatePath<java.time.LocalDate> createdPost = createDate("createdPost", java.time.LocalDate.class);
-
     public final DatePath<java.time.LocalDate> date = createDate("date", java.time.LocalDate.class);
 
     public final StringPath emotion = createString("emotion");
