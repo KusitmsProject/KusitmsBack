@@ -22,7 +22,7 @@ public class GetCalendarMomentRes {
     private String imageURL;
 
     public static GetCalendarMomentRes getCalendarMomentRes(Post post){
-        String dd = post.getCreatedAt().format(DateTimeFormatter.ofPattern("dd"));
+        String dd = post.getCreatedAt().format(DateTimeFormatter.ofPattern("dd")); //이게 null이 들어간다!
         DayOfWeek dayOfWeek =post.getCreatedAt().getDayOfWeek();
         String dayText=dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.US);
         return GetCalendarMomentRes.builder()

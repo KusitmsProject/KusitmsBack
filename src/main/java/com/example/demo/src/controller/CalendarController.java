@@ -44,7 +44,7 @@ public class CalendarController {
     @GetMapping("/calendar/today/exists")
     public BaseResponse<List<GetCalendarTodayRes>> getTodayExist(@RequestParam(value="year")String year,@RequestParam(value="month") String month){
 
-        List<GetCalendarTodayRes>getTodayExistList=calendarService.getTodayExist(year,month);
+        List<GetCalendarTodayRes>getTodayExistList=calendarService.getTodayExist(year,month); //여기가 문제
         return new BaseResponse<>(getTodayExistList);
     }
 
