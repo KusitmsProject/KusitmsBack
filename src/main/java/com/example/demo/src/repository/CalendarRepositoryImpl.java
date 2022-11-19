@@ -1,6 +1,7 @@
 package com.example.demo.src.repository;
 
 import com.example.demo.src.entity.Post;
+
 import com.example.demo.src.entity.QPost;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.ExpressionUtils;
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.demo.src.entity.QPost.post;
+
+//import static com.example.demo.src.entity.QPost.post;
 
 
 @RequiredArgsConstructor

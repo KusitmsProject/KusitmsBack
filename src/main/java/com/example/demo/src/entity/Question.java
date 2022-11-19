@@ -1,15 +1,17 @@
 package com.example.demo.src.entity;
 
 
+import com.google.api.client.repackaged.com.google.common.base.Optional;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+
 
 @Entity
 @Getter
 @Table(name="Question")
-public class Question {
+public class Question extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,13 +23,20 @@ public class Question {
 
     private String videoIdx;
 
-    @Column(name="createdAt",nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private Timestamp createdAt;
 
-    @Column(name="updatedAt",nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private Timestamp updatedAt;
 
     private String status;
 
+    @Builder
+    public Question(Long questionIdx,String questionText,String imageUrl,String videoIdx){
+        this.questionIdx=questionIdx;
+        this.questionText=questionText;
+        this.imageUrl=imageUrl;
+        this.videoIdx=videoIdx;
+    }
 
+
+    public Question() {
+
+    }
 }
