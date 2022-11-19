@@ -36,10 +36,7 @@ public class CalendarService {
 
         List<GetCalendarMomentRes> getCalendarMomentResList=new ArrayList<>();
 
-        //월 validation
-        if(Integer.parseInt(month)>=1&&Integer.parseInt(month)<=9){
-            month="0".concat(month);
-        }
+
         
         // 날짜 validation
         int endDay;
@@ -51,6 +48,11 @@ public class CalendarService {
             endDay=30;
         }else{
             endDay=31;
+        }
+
+        //월 validation
+        if(Integer.parseInt(month)>=1&&Integer.parseInt(month)<=9){
+            month="0".concat(month);
         }
 
         for(int i=1;i<=endDay;i++){
@@ -95,10 +97,7 @@ public class CalendarService {
     public List<GetCalendarTodayRes> getTodayExist(String year,String month){
         List<GetCalendarTodayRes> getCalendarTodayResList=new ArrayList<>();
 
-        //월 validation
-        if(Integer.parseInt(month)>=1&&Integer.parseInt(month)<=9){
-            month="0".concat(month);
-        }
+
         //날짜 validation
         int endDay;
         if(month.equals("2")){
@@ -109,6 +108,11 @@ public class CalendarService {
             endDay=30;
         }else{
             endDay=31;
+        }
+
+        //월 validation
+        if(Integer.parseInt(month)>=1&&Integer.parseInt(month)<=9){
+            month="0".concat(month);
         }
 
         for(int i=1;i<=endDay;i++){
@@ -151,10 +155,6 @@ public class CalendarService {
 
     public List<GetCalendarMomentRes> getCalendarMomentView(String year,String month){
 
-        //월 validation
-        if(Integer.parseInt(month)>=1&&Integer.parseInt(month)<=9){
-            month="0".concat(month);
-        }
 
         //날짜 validation
         int endDay;
@@ -167,6 +167,12 @@ public class CalendarService {
         }else{
             endDay=31;
         }
+
+        //월 validation
+        if(Integer.parseInt(month)>=1&&Integer.parseInt(month)<=9){
+            month="0".concat(month);
+        }
+
 
         String startDate=year.concat("-").concat(month).concat("-01");
         String endDate=year.concat("-").concat(month).concat("-").concat(Integer.toString(endDay));
@@ -185,10 +191,7 @@ public class CalendarService {
     public List<GetCalendarTodayRes> getCalendarTodayView(String year,String month){
 
 
-        //월 validation
-        if(Integer.parseInt(month)>=1&&Integer.parseInt(month)<=9){
-            month="0".concat(month);
-        }
+
 
         //날짜 validation
         int endDay;
@@ -200,6 +203,11 @@ public class CalendarService {
             endDay=30;
         }else{
             endDay=31;
+        }
+
+        //월 validation
+        if(Integer.parseInt(month)>=1&&Integer.parseInt(month)<=9){
+            month="0".concat(month);
         }
 
         String startDate=year.concat("-").concat(month).concat("-01");
@@ -219,10 +227,6 @@ public class CalendarService {
     //그때의 나 디테일
     public GetCalendarMomentDetailRes getCalendarMomentDetail(String year,String month,String day){
 
-        //월 validation
-        if(Integer.parseInt(month)>=1&&Integer.parseInt(month)<=9){
-            month="0".concat(month);
-        }
 
         String startTime;
         String endTime;
@@ -233,6 +237,11 @@ public class CalendarService {
         }else{
             startTime=year.concat("-").concat(month).concat("-").concat(day);
             endTime=year.concat("-").concat(month).concat("-").concat(day);
+        }
+
+        //월 validation
+        if(Integer.parseInt(month)>=1&&Integer.parseInt(month)<=9){
+            month="0".concat(month);
         }
 
         Post getCalendarMomentDetail=calendarRepository.findByMonthYearDay(startTime,endTime,0);
@@ -252,10 +261,7 @@ public class CalendarService {
     //오늘의 나 디테일
 
     public GetCalendarTodayDetailRes getCalendarTodayDetail(String year,String month,String day){
-        //월 validation
-        if(Integer.parseInt(month)>=1&&Integer.parseInt(month)<=9){
-            month="0".concat(month);
-        }
+
 
         String startTime;
         String endTime;
@@ -267,6 +273,12 @@ public class CalendarService {
             startTime=year.concat("-").concat(month).concat("-").concat(day);
             endTime=year.concat("-").concat(month).concat("-").concat(day);
         }
+
+        //월 validation
+        if(Integer.parseInt(month)>=1&&Integer.parseInt(month)<=9){
+            month="0".concat(month);
+        }
+
         Post getCalendarTodayDetail=calendarRepository.findByMonthYearDay(startTime,endTime,1);
 
         return GetCalendarTodayDetailRes.builder()
