@@ -283,6 +283,7 @@ public class CalendarService {
 
         return GetCalendarTodayDetailRes.builder()
                 .track(getCalendarTodayDetail.getMusic().getTrack())
+                .videoID(getCalendarTodayDetail.getMusic().getVideoIdx())
                 .lyrics(getCalendarTodayDetail.getLyrics())
                 .emotion(getCalendarTodayDetail.getEmotion())
                 .imageURL(getCalendarTodayDetail.getImageUrl())
