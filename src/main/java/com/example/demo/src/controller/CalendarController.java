@@ -2,12 +2,10 @@ package com.example.demo.src.controller;
 
 
 import com.example.demo.config.BaseResponse;
-import com.example.demo.src.dto.response.GetCalendarMomentDetailRes;
-import com.example.demo.src.dto.response.GetCalendarMomentRes;
-import com.example.demo.src.dto.response.GetCalendarTodayDetailRes;
-import com.example.demo.src.dto.response.GetCalendarTodayRes;
+import com.example.demo.src.dto.response.*;
 import com.example.demo.src.entity.Post;
 import com.example.demo.src.service.CalendarService;
+import com.google.api.client.repackaged.com.google.common.base.Optional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -78,7 +77,7 @@ public class CalendarController {
 
     // 그때의 나 detail
     @GetMapping("/calendar/moment/detail")
-    public BaseResponse<GetCalendarMomentDetailRes>getCalendarMomentDetail(@RequestParam(value="year")String year,@RequestParam(value="month")String month,@RequestParam(value="day")String day){
+    public BaseResponse<GetCalendarMomentDetailRes>getCalendarMomentDetail(@RequestParam(value="year")String year,@RequestParam(value="month")String month,@RequestParam(value="day")String day) throws BaseException {
         GetCalendarMomentDetailRes getCalendarMomentDetailRes=calendarService.getCalendarMomentDetail(year,month,day);
 
         return new BaseResponse<>(getCalendarMomentDetailRes);
@@ -94,6 +93,8 @@ public class CalendarController {
     public BaseResponse <GetCalendarTodayDetailRes>getCalendarTodayDetail(@RequestParam(value="year")String year, @RequestParam(value="month")String month, @RequestParam(value="day")String day){
 
         GetCalendarTodayDetailRes getCalendarTodayDetailRes=calendarService.getCalendarTodayDetail(year,month,day);
+
+
 
         return new BaseResponse<>(getCalendarTodayDetailRes);
     }

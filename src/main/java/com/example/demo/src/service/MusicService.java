@@ -67,7 +67,7 @@ public class MusicService {
 
 
         //페이징을 3개라 가정
-        for(int i=0;i<3;i++){
+        for(int i=0;i<1;i++){
             JsonObject tracks= items.get(i).getAsJsonObject();
             trackIdx=tracks.get("id").getAsString();
             realTrack=tracks.get("name").getAsString();

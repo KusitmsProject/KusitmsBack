@@ -11,6 +11,7 @@ public class GetCalendarTodayDetailRes {
 
 
     private String track;
+    private String artist;
     private String videoID;
     private String lyrics;
     private String emotion;
@@ -20,6 +21,7 @@ public class GetCalendarTodayDetailRes {
 
         return GetCalendarTodayDetailRes.builder()
                 .track(post.getMusic().getTrack())
+                .artist(post.getMusic().getArtist())
                 .videoID(post.getMusic().getVideoIdx())
                 .lyrics(post.getLyrics())
                 .emotion(post.getEmotion())

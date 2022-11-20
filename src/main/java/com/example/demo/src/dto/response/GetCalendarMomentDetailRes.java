@@ -16,9 +16,11 @@ import java.util.Locale;
 public class GetCalendarMomentDetailRes {
 
     private String track;
+    private String artist;
     private String season;
     private List<String> weather;
     private LocalDate date;
+    private List<String> friendList;
     private String place;
     private String emotion;
     private String imageURL;
@@ -28,6 +30,7 @@ public class GetCalendarMomentDetailRes {
 
         return GetCalendarMomentDetailRes.builder()
                 .track(post.getMusic().getTrack())
+                .artist(post.getMusic().getArtist())
                 .season(post.getSeason())
                 .weather(post.getWeather())
                 .date(post.getDate())
