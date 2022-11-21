@@ -72,9 +72,6 @@ public class KakaomapService {
 
             String x = jsonObject.get("x").getAsString();
             String y = jsonObject.get("y").getAsString();
-            System.out.println("x = " + x);
-            System.out.println("y = " + y);
-
             result.add(x);
             result.add(y);
 
