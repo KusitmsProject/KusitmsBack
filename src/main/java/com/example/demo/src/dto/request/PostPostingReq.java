@@ -37,7 +37,7 @@ public class PostPostingReq {
     @ApiModelProperty(notes = "장소 별칭", example = "우리 집")
     private String placeNickname; // 장소 별칭
 
-    @ApiModelProperty(notes = "장소", example = "서울시 동작구 상도로 369")
+    @ApiModelProperty(notes = "장소", example = "서울 동작구 상도로 369")
     private String place; // 장소
 
     @ApiModelProperty(notes = "사진 url, image api 리턴 값", example = "https://")
