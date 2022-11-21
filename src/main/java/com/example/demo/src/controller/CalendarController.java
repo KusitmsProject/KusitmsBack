@@ -37,8 +37,12 @@ public class CalendarController {
     @GetMapping("/calendar/moment/exists")
     public BaseResponse<List<GetCalendarMomentRes>> getMomentExist(@RequestParam(value="year")String year,@RequestParam(value="month") String month) throws BaseException {
 
-        List<GetCalendarMomentRes>getMomentExistList=calendarService.getMomentExist(year,month);
-        return new BaseResponse<>(getMomentExistList);
+        try{
+            List<GetCalendarMomentRes>getMomentExistList=calendarService.getMomentExist(year,month);
+            return new BaseResponse<>(getMomentExistList);
+        }catch(BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
     }
     @GetMapping("/calendar/today/exists")
     public BaseResponse<List<GetCalendarTodayRes>> getTodayExist(@RequestParam(value="year")String year,@RequestParam(value="month") String month) throws BaseException {
