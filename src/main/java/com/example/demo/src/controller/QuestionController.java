@@ -3,6 +3,7 @@ package com.example.demo.src.controller;
 
 import com.example.demo.config.BaseResponse;
 import com.example.demo.src.dto.request.PostQuestionReq;
+import com.example.demo.src.dto.response.BaseException;
 import com.example.demo.src.dto.response.GetQuestionRes;
 import com.example.demo.src.dto.response.PostQuestionRes;
 import com.example.demo.src.entity.Post;
@@ -25,7 +26,7 @@ public class QuestionController {
 
     // 질문 등록
     @PostMapping(value="/question")
-    public BaseResponse<PostQuestionRes> postQuestion(@RequestBody PostQuestionReq postQuestionReq){
+    public BaseResponse<PostQuestionRes> postQuestion(@RequestBody PostQuestionReq postQuestionReq)  {
 
 
         String imageUrl="";
@@ -63,15 +64,21 @@ public class QuestionController {
     @GetMapping("/question")
     public BaseResponse<GetQuestionRes> getQuestion(@RequestParam(value="year")String year,@RequestParam(value="month")String month,@RequestParam(value="day")String day){
 
-            Question questionRes=questionRepository.getQuestionByDate(year,month,day);
-            GetQuestionRes getQuestionRes=GetQuestionRes.builder()
-                    .questionIdx(questionRes.getQuestionIdx())
-                    .questionText(questionRes.getQuestionText())
-                    .imageUrl(questionRes.getImageUrl())
-                    .videoIdx(questionRes.getVideoIdx())
-                    .build();
+            try{
+                Question questionRes=questionRepository.getQuestionByDate(year,month,day);
 
-            return new BaseResponse<>(getQuestionRes);
+
+                GetQuestionRes getQuestionRes=GetQuestionRes.builder()
+                        .questionIdx(questionRes.getQuestionIdx())
+                        .questionText(questionRes.getQuestionText())
+                        .imageUrl(questionRes.getImageUrl())
+                        .videoIdx(questionRes.getVideoIdx())
+                        .build();
+
+                return new BaseResponse<>(getQuestionRes);
+            }catch (NullPointerException e){
+                throw  new NullPointerException(e.getMessage());
+            }
     }
 
 
