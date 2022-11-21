@@ -3,17 +3,14 @@ package com.example.demo.src.controller;
 
 import com.example.demo.config.BaseResponse;
 import com.example.demo.src.dto.response.*;
-import com.example.demo.src.entity.Post;
 import com.example.demo.src.service.CalendarService;
-import com.google.api.client.repackaged.com.google.common.base.Optional;
+import com.example.demo.src.service.WeatherService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,9 +18,23 @@ import java.util.List;
 public class CalendarController {
 
     private final CalendarService calendarService;
+    private final WeatherService weatherService;
 
-    public CalendarController(CalendarService calendarService) {
+    public CalendarController(CalendarService calendarService, WeatherService weatherService) {
         this.calendarService = calendarService;
+        this.weatherService = weatherService;
+    }
+
+    // youngmin
+    @Operation(summary = "오늘 날씨 기반 랜덤 데이터 반환", description = "/bring/calender/random?date={날짜}&place={위치}&userIdx={유저인덱스}")
+    @GetMapping("/calender/random")
+    public BaseResponse<GetWeatherRandomRes> searchWeather(@RequestParam(value="date")String date, @RequestParam(value="place")String place, @RequestParam(value="userIdx")String userIdx) {
+        try{
+            GetWeatherRandomRes getWeatherRandomRes = weatherService.randomData(date, place, userIdx);
+            return new BaseResponse<>(getWeatherRandomRes);
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
     }
 
 
