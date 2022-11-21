@@ -21,6 +21,8 @@ public class GetSearchTrackRes {
 
     private Long musicIdx;
 
+    private String videoId; // 유튜브 비디오 id
+
     private String artist; // 가수
 
     private String track; // 곡 제목

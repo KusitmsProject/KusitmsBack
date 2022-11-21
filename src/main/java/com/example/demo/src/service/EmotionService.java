@@ -46,16 +46,10 @@ public class EmotionService {
     }
 
     public List<GetSearchEmotionRes> searchForEmotion(String userIdx, String emotion) throws BaseException, IOException {
-
-
-
         List<GetSearchEmotionRes> result = new ArrayList<>();
 
         User user = userRepository.findByUserIdx(Long.parseLong(userIdx));
         List<Post> postList = postRepository.findAllByUserAndEmotion(user, emotion);
-
-
-
 
         for(int i = 0; i < postList.size(); i++){
             // 해당 post의 가수, 제목 찾기
@@ -87,15 +81,12 @@ public class EmotionService {
 
             String response = stringBuffer.toString();
 
-
             //Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
             JsonParser jsonParser=new JsonParser();
             JsonElement element= jsonParser.parse(response);
             JsonArray results=element.getAsJsonObject().get("result").getAsJsonArray();
             JsonObject targetItem=results.get(0).getAsJsonObject();
             String trackIdx=targetItem.get("trackIdx").getAsString();
-
-
 
             // 가사 api에 id 넣는다
             String encodeData2="";
@@ -121,8 +112,6 @@ public class EmotionService {
             bufferedReader2.close();
 
             String response2 = stringBuffer2.toString();
-
-
 
             JsonParser jsonParser2=new JsonParser();
             JsonElement element2= jsonParser2.parse(response2);
@@ -203,10 +192,8 @@ public class EmotionService {
 
         URL url2 = new URL(URL);
         HttpURLConnection connection2 = (HttpURLConnection) url2.openConnection();
-
         connection2.setRequestMethod(GET);
         connection2.setRequestProperty("User-Agent", USER_AGENT);
-
 
         BufferedReader bufferedReader2 = new BufferedReader(new InputStreamReader(connection2.getInputStream()));
         StringBuffer stringBuffer2 = new StringBuffer();
@@ -218,9 +205,6 @@ public class EmotionService {
         bufferedReader2.close();
 
         String response2 = stringBuffer2.toString();
-
-
-
         JsonParser jsonParser2=new JsonParser();
         JsonElement element2= jsonParser2.parse(response2);
         JsonArray results2=element2.getAsJsonObject().get("result").getAsJsonArray();
@@ -231,7 +215,6 @@ public class EmotionService {
             lyrics+=results2.get(num).getAsString().concat("\n");
         }
 
-
         List<Post> postList = postRepository.findAllByUserAndMusic(user, music);
         for(int i = 0; i < postList.size(); i++){
             // 해당 post의 가수, 제목 찾기
@@ -239,6 +222,7 @@ public class EmotionService {
                     .postIdx(postList.get(i).getPostIdx())
                     .musicIdx(music.getMusicIdx())
                     .date(postList.get(i).getDate())
+                    .videoId(music.getVideoIdx())
                     .artist(music.getArtist())
                     .track(music.getTrack())
                     .lyrics(lyrics)
