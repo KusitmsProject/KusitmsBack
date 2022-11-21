@@ -4,7 +4,13 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import com.example.demo.src.dto.response.BaseException;
+import com.example.demo.src.dto.response.GetWeatherRandomRes;
 import com.example.demo.src.dto.response.GetWeatherRes;
+import com.example.demo.src.entity.Post;
+import com.example.demo.src.entity.User;
+import com.example.demo.src.repository.MusicRepository;
+import com.example.demo.src.repository.PostRepository;
+import com.example.demo.src.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
@@ -15,6 +21,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -22,6 +29,15 @@ import java.util.List;
 @PropertySource("classpath:weather.properties")
 public class WeatherService {
     private static String apikey; // 기상청 api key
+    private final KakaomapService kakaomapService;
+    private final PostRepository postRepository;
+    private final UserRepository userRepository;
+
+    public WeatherService(KakaomapService kakaomapService, PostRepository postRepository, UserRepository userRepository, MusicRepository musicRepository) {
+        this.kakaomapService = kakaomapService;
+        this.postRepository = postRepository;
+        this.userRepository = userRepository;
+    }
 
     // static에 @Value 안되므로 주입
     @Value("${key}")
@@ -30,7 +46,7 @@ public class WeatherService {
     }
 
     // tag값의 정보를 가져오는 함수
-    public static String getTagValue(String tag, Element eElement) {
+    public String getTagValue(String tag, Element eElement) {
 
         //결과를 저장할 result 변수 선언
         String result = "";
@@ -46,7 +62,7 @@ public class WeatherService {
     }
 
     // 해당 위치와 가장 가까운 관측소 찾아주는 함수
-    public static String getNearObservatory(String place){
+    public String getNearObservatory(String place){
         String Observatories[] = {"속초","철원","동두천","파주","대관령","춘천","백령도","강릉","동해",
                 "서울","인천","원주","울릉도","홍천","태백","정선","제천","보은","천안","보령","부여","금산",
                 "세종","부안","임실","정읍","남원","장수","수원","영월","충주","서산","울진","청주","대전",
@@ -82,7 +98,62 @@ public class WeatherService {
         return "";
     }
 
-    public static List<GetWeatherRes> weatherSearch(String date, String place) throws BaseException {
+    public GetWeatherRandomRes randomData(String date, String place, String userIdx) throws BaseException {
+        List<GetWeatherRes> weatherList = weatherSearch(date, place); // 날씨 정보 가져옴
+
+        // 해당 유저가 등록한 리스트 가져옴
+        User user = userRepository.findByUserIdx(Long.parseLong(userIdx)); // 유저 검색
+        List<Post> userPostList = postRepository.findAllByUser(user); // 해당 user post 검색
+        // 랜덤으로 섞기
+        Collections.shuffle(userPostList);
+
+        // 오늘 날씨와 같은 post 찾음
+        for(int i = 0; i < userPostList.size(); i++){
+            Post post = userPostList.get(i);
+            List<String> getWeatherList = post.getWeather();
+            for(int j = 0; j < getWeatherList.size(); j++){
+                // 날씨와 같으면 출력
+                if(getWeatherList.get(j).equals(weatherList.get(0).getWeather())){
+                    GetWeatherRandomRes getWeatherRandomRes = GetWeatherRandomRes.builder()
+                            .date(weatherList.get(0).getDate())
+                            .weather(weatherList.get(0).getWeather())
+                            .temp(weatherList.get(0).getTemp())
+                            .artist(post.getMusic().getArtist())
+                            .track(post.getMusic().getTrack())
+                            .build();
+                    return getWeatherRandomRes;
+                }
+
+                // 더움, 추움과 같으면 출력
+                String temp = "";
+                if(weatherList.get(0).getTemp() == 1)
+                    temp = "HOT";
+                else if(weatherList.get(0).getTemp() == 2)
+                    temp = "COLD";
+                if(getWeatherList.get(j).equals(temp)){
+                    GetWeatherRandomRes getWeatherRandomRes = GetWeatherRandomRes.builder()
+                            .date(weatherList.get(0).getDate())
+                            .weather(getWeatherList.get(j))
+                            .temp(weatherList.get(0).getTemp())
+                            .artist(post.getMusic().getArtist())
+                            .track(post.getMusic().getTrack())
+                            .build();
+                    return getWeatherRandomRes;
+                }
+            }
+        }
+
+        GetWeatherRandomRes getWeatherRandomRes = GetWeatherRandomRes.builder()
+                .date(weatherList.get(0).getDate())
+                .weather(weatherList.get(0).getWeather())
+                .temp(weatherList.get(0).getTemp())
+                .artist("")
+                .track("")
+                .build();
+        return getWeatherRandomRes;
+    }
+
+    public List<GetWeatherRes> weatherSearch(String date, String place) throws BaseException {
         List<GetWeatherRes> result = new ArrayList<>();
 
         try{
@@ -111,10 +182,10 @@ public class WeatherService {
 
 //                System.out.println("위치 : " + getTagValue("stnNm", eElement));
 //                System.out.println("위치번호 : " + getTagValue("stnId", eElement));
-                System.out.println("날짜 : " + getTagValue("tm", eElement));
-                System.out.println("평균 기온 : " + getTagValue("avgTa", eElement));
-                System.out.println("최고 기온 : " + getTagValue("maxTa", eElement));
-                System.out.println("일기현상 : " + getTagValue("iscs", eElement));
+//                System.out.println("날짜 : " + getTagValue("tm", eElement));
+//                System.out.println("평균 기온 : " + getTagValue("avgTa", eElement));
+//                System.out.println("최고 기온 : " + getTagValue("maxTa", eElement));
+//                System.out.println("일기현상 : " + getTagValue("iscs", eElement));
 
                 GetWeatherRes item = new GetWeatherRes(date, "", 0);
 
@@ -122,13 +193,13 @@ public class WeatherService {
                 String cloud = getTagValue("avgTca", eElement);
                 String weather = getTagValue("iscs", eElement);
                 if(weather.indexOf("눈") != -1)
-                    item.setWeather("눈");
+                    item.setWeather("SNOW");
                 else if(weather.indexOf("비") != -1 || weather.indexOf("소나기") != -1)
-                    item.setWeather("비");
+                    item.setWeather("RAIN");
                 // 전운량 7이상이면 흐림 처리 (기상청 기준 0~5 맑음, 6~8 구름많음, 9~10 흐림)
                 else if(Float.parseFloat(cloud) >= 7)
-                    item.setWeather("흐림");
-                else item.setWeather("맑음");
+                    item.setWeather("CLOUD");
+                else item.setWeather("SUNNY");
 
                 // 더움 추분 구분
                 String maxTemp = getTagValue("maxTa", eElement);
