@@ -22,6 +22,7 @@ public class GetCalendarMomentDetailRes {
     private LocalDate date;
     private List<String> friendList;
     private String place;
+    private String placeNickname;
     private String emotion;
     private String imageURL;
     private String record;
@@ -35,6 +36,7 @@ public class GetCalendarMomentDetailRes {
                 .weather(post.getWeather())
                 .date(post.getDate())
                 .place(post.getPlace())
+                .placeNickname(post.getPlaceNickname())
                 .emotion(post.getEmotion())
                 .imageURL(post.getImageUrl())
                 .record(post.getRecord())
