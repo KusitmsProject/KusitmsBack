@@ -1,5 +1,9 @@
 package com.example.demo.src.service;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
@@ -9,29 +13,29 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @PropertySource("classpath:kakao.properties")
-public class KakaoAPI {
+public class KakaomapService {
     private static String kakao_apikey;
 
     @Value("${apikey}")
     public void setApiKey(String key) {kakao_apikey = key;}
 
-    public String getPlace() {
+    // 해당 주소 좌표 반환
+    public List<String> getCoordinates(String place) {
+        List<String> result = new ArrayList<>();
         try {
             // UTF-8로 인코딩
-            String query = URLEncoder.encode("서울 강남구 강남대로 지하 396", "UTF-8");
+            String query = URLEncoder.encode(place, "UTF-8");
 
             // 파라미터를 사용하여 요청 URL을 구성한다.
             String apiURL = "https://dapi.kakao.com/v2/local/search/address.JSON?" +
                     "query=" + query
 //                    + "analyze_type=" + "similar"
                     ;
-//                    + "&category_group_code=" + "FD6"
-//                    + "&x=" + "37.5606326"
-//                    + "&y=" + "126.9433486"
-//                    + "&radius=" + "100";
             URL url = new URL(apiURL);
             HttpURLConnection con = (HttpURLConnection)url.openConnection();
 
@@ -49,6 +53,7 @@ public class KakaoAPI {
             } else {  // 에러 발생
                 br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
             }
+
             String inputLine;
             StringBuffer response = new StringBuffer();
             while ((inputLine = br.readLine()) != null) {
@@ -56,10 +61,27 @@ public class KakaoAPI {
             }
             br.close();
 //            System.out.println(response.toString());
-            return response.toString();
+            String str = response.toString();
+            JsonParser jsonParser=new JsonParser();
+            JsonElement element= jsonParser.parse(str);
+            JsonArray jsonArray = element.getAsJsonObject().get("documents").getAsJsonArray();
+            System.out.println("jsonArray = " + jsonArray);
+
+            // todo : null처리
+            JsonObject jsonObject = (JsonObject) jsonArray.get(0);//인덱스 번호로 접근해서 가져온다.
+
+            String x = jsonObject.get("x").getAsString();
+            String y = jsonObject.get("y").getAsString();
+            System.out.println("x = " + x);
+            System.out.println("y = " + y);
+
+            result.add(x);
+            result.add(y);
+
+            return result;
         } catch (Exception e) {
             System.out.println(e);
         }
-        return "";
+        return result;
     }
 }

@@ -9,6 +9,7 @@ import com.example.demo.src.repository.MusicRepository;
 import com.example.demo.src.repository.PostRepository;
 import com.example.demo.src.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,26 +21,33 @@ import java.util.stream.Collectors;
 public class PostService {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
-
     private final MusicRepository musicRepository;
+    private final KakaomapService kakaomapService;
+
+    private static String kakao_apikey;
+
+    @Value("${apikey}")
+    public void setApiKey(String key) {kakao_apikey = key;}
 
     @Autowired
-    public PostService(UserRepository userRepository, PostRepository postRepository, MusicRepository musicRepository){
+    public PostService(UserRepository userRepository, PostRepository postRepository, MusicRepository musicRepository, KakaomapService kakaomapService){
         this.userRepository = userRepository;
         this.postRepository = postRepository;
         this.musicRepository = musicRepository;
+        this.kakaomapService = kakaomapService;
     }
 
     public PostPostingRes register(PostPostingReq postPostingReq) throws BaseException {
-        //jungmin
-        // 이문세의 붉은 노을 빅뱅의 붉은 노을을 구별해야함
-        // track으로 찾아온 Music 의 artist와 artist로 찾아온 Music의 artist가 같으면 저장
 
+        // track으로 찾아온 Music 의 artist와 artist로 찾아온 Music의 artist가 같으면 저장
         List<Music> findByTrack = musicRepository.findByTrack(postPostingReq.getTrack());
         List<Music>ans=findByTrack.stream().filter(
                 o->o.getArtist().equals(postPostingReq.getArtist())
         ).collect(Collectors.toList());
         Music music=ans.get(0);//filter한 값 중 가장 앞에 값을 music에 넣자
+
+        // kakaomap api로 위도, 경도 찾기
+        List<String> coordinates = kakaomapService.getCoordinates(postPostingReq.getPlace());
 
         Post post = Post.builder()
                 .user(userRepository.findByUserIdx(postPostingReq.getUserIdx()))
@@ -58,8 +66,20 @@ public class PostService {
                 .build();
 
         Post savedPost = postRepository.save(post);
+        // 장소 검색 실패 시
+        if(coordinates.size() == 0){
+            PostPostingRes postPostingRes = PostPostingRes.builder()
+                    .postIdx(savedPost.getPostIdx())
+                    .x("")
+                    .y("")
+                    .build();
+            return postPostingRes;
+        }
+
         PostPostingRes postPostingRes = PostPostingRes.builder()
                 .postIdx(savedPost.getPostIdx())
+                .x(coordinates.get(0))
+                .y(coordinates.get(1))
                 .build();
 
         return postPostingRes;
