@@ -35,13 +35,13 @@ public class CalendarController {
     // 쿼리에서 반환값이 0 이면 null을 세팅하고
     // 아니면 imageURL을 뱉자
     @GetMapping("/calendar/moment/exists")
-    public BaseResponse<List<GetCalendarMomentRes>> getMomentExist(@RequestParam(value="year")String year,@RequestParam(value="month") String month)  {
+    public BaseResponse<List<GetCalendarMomentRes>> getMomentExist(@RequestParam(value="year")String year,@RequestParam(value="month") String month) throws BaseException {
 
         List<GetCalendarMomentRes>getMomentExistList=calendarService.getMomentExist(year,month);
         return new BaseResponse<>(getMomentExistList);
     }
     @GetMapping("/calendar/today/exists")
-    public BaseResponse<List<GetCalendarTodayRes>> getTodayExist(@RequestParam(value="year")String year,@RequestParam(value="month") String month){
+    public BaseResponse<List<GetCalendarTodayRes>> getTodayExist(@RequestParam(value="year")String year,@RequestParam(value="month") String month) throws BaseException {
 
         List<GetCalendarTodayRes>getTodayExistList=calendarService.getTodayExist(year,month); //여기가 문제
         return new BaseResponse<>(getTodayExistList);
@@ -50,7 +50,7 @@ public class CalendarController {
     
     // 그때의 나
     @GetMapping("/calendar/moment")
-    public BaseResponse<List<GetCalendarMomentRes>> getCalendarMomentView(@RequestParam(value="year")String year,@RequestParam(value="month") String month){
+    public BaseResponse<List<GetCalendarMomentRes>> getCalendarMomentView(@RequestParam(value="year")String year,@RequestParam(value="month") String month) throws BaseException {
 
 
         List<GetCalendarMomentRes> getCalendarMomentRes=calendarService.getCalendarMomentView(year,month);
@@ -66,10 +66,14 @@ public class CalendarController {
     //
 
     @GetMapping("/calendar/today")
-    public BaseResponse<List<GetCalendarTodayRes>> getCalendarTodayView(@RequestParam(value="year")String year,@RequestParam(value="month") String month){
-        List<GetCalendarTodayRes> getCalendarTodayRes=calendarService.getCalendarTodayView(year,month);
+    public BaseResponse<List<GetCalendarTodayRes>> getCalendarTodayView(@RequestParam(value="year")String year,@RequestParam(value="month") String month) throws BaseException {
+        try{
+            List<GetCalendarTodayRes> getCalendarTodayRes=calendarService.getCalendarTodayView(year,month);
 
-        return new BaseResponse<>(getCalendarTodayRes);
+            return new BaseResponse<>(getCalendarTodayRes);
+        }catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
 
     }
     
@@ -78,9 +82,14 @@ public class CalendarController {
     // 그때의 나 detail
     @GetMapping("/calendar/moment/detail")
     public BaseResponse<GetCalendarMomentDetailRes>getCalendarMomentDetail(@RequestParam(value="year")String year,@RequestParam(value="month")String month,@RequestParam(value="day")String day) throws BaseException {
-        GetCalendarMomentDetailRes getCalendarMomentDetailRes=calendarService.getCalendarMomentDetail(year,month,day);
+        try{
+            GetCalendarMomentDetailRes getCalendarMomentDetailRes=calendarService.getCalendarMomentDetail(year,month,day);
 
-        return new BaseResponse<>(getCalendarMomentDetailRes);
+            return new BaseResponse<>(getCalendarMomentDetailRes);
+        }catch (BaseException e){
+
+            return  new BaseResponse<>(e.getStatus());
+        }
 
     }
 
@@ -90,12 +99,16 @@ public class CalendarController {
     // 오늘의 나 detail
 
     @GetMapping("/calendar/today/detail")
-    public BaseResponse <GetCalendarTodayDetailRes>getCalendarTodayDetail(@RequestParam(value="year")String year, @RequestParam(value="month")String month, @RequestParam(value="day")String day){
+    public BaseResponse <GetCalendarTodayDetailRes>getCalendarTodayDetail(@RequestParam(value="year")String year, @RequestParam(value="month")String month, @RequestParam(value="day")String day) throws BaseException {
 
-        GetCalendarTodayDetailRes getCalendarTodayDetailRes=calendarService.getCalendarTodayDetail(year,month,day);
+        try{
+            GetCalendarTodayDetailRes getCalendarTodayDetailRes=calendarService.getCalendarTodayDetail(year,month,day);
 
 
 
-        return new BaseResponse<>(getCalendarTodayDetailRes);
+            return new BaseResponse<>(getCalendarTodayDetailRes);
+        }catch(BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
     }
 }

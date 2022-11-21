@@ -32,7 +32,7 @@ public class CalendarService {
 
     }
 
-    public List<GetCalendarMomentRes>getMomentExist(String year,String month) {
+    public List<GetCalendarMomentRes>getMomentExist(String year,String month) throws BaseException{
 
         List<GetCalendarMomentRes> getCalendarMomentResList=new ArrayList<>();
 
@@ -94,7 +94,7 @@ public class CalendarService {
 
     }
 
-    public List<GetCalendarTodayRes> getTodayExist(String year,String month){
+    public List<GetCalendarTodayRes> getTodayExist(String year,String month) throws BaseException{
         List<GetCalendarTodayRes> getCalendarTodayResList=new ArrayList<>();
 
 
@@ -153,7 +153,7 @@ public class CalendarService {
     }
 
 
-    public List<GetCalendarMomentRes> getCalendarMomentView(String year,String month){
+    public List<GetCalendarMomentRes> getCalendarMomentView(String year,String month) throws BaseException{
 
 
         //날짜 validation
@@ -188,7 +188,7 @@ public class CalendarService {
         
     }
 
-    public List<GetCalendarTodayRes> getCalendarTodayView(String year,String month){
+    public List<GetCalendarTodayRes> getCalendarTodayView(String year,String month) throws BaseException{
 
 
 
@@ -246,44 +246,50 @@ public class CalendarService {
         }
 
 
+        try{
+            Post getCalendarMomentDetail=calendarRepository.findByMonthYearDay(startTime,endTime,0);
 
-        Post getCalendarMomentDetail=calendarRepository.findByMonthYearDay(startTime,endTime,0);
 
+            //null값일때 처리
+            if(getCalendarMomentDetail==null){
+                return GetCalendarMomentDetailRes.builder()
+                        .track("")
+                        .season("")
+                        .weather(new ArrayList<>())
+                        .date(LocalDate.now())
+                        .friendList(new ArrayList<>())
+                        .place("")
+                        .placeNickname("")
+                        .emotion("")
+                        .imageURL("")
+                        .record("")
+                        .build();
+            }
 
-        //null값일때 처리
-        if(getCalendarMomentDetail==null){
             return GetCalendarMomentDetailRes.builder()
-                    .track("")
-                    .season("")
-                    .weather(new ArrayList<>())
-                    .date(LocalDate.now())
-                    .friendList(new ArrayList<>())
-                    .place("")
-                    .placeNickname("")
-                    .emotion("")
-                    .imageURL("")
-                    .record("")
+                    .track(getCalendarMomentDetail.getMusic().getTrack())
+                    .artist(getCalendarMomentDetail.getMusic().getArtist())
+                    .season(getCalendarMomentDetail.getSeason())
+                    .weather(getCalendarMomentDetail.getWeather())
+                    .date(getCalendarMomentDetail.getDate())
+                    .friendList(getCalendarMomentDetail.getFriendList())
+                    .place(getCalendarMomentDetail.getPlace())
+                    .placeNickname(getCalendarMomentDetail.getPlaceNickname())
+                    .emotion(getCalendarMomentDetail.getEmotion())
+                    .imageURL(getCalendarMomentDetail.getImageUrl())
+                    .record(getCalendarMomentDetail.getRecord())
                     .build();
+
+        }catch (NullPointerException e){
+            throw new NullPointerException(e.getMessage());
         }
 
-        return GetCalendarMomentDetailRes.builder()
-                .track(getCalendarMomentDetail.getMusic().getTrack())
-                .artist(getCalendarMomentDetail.getMusic().getArtist())
-                .season(getCalendarMomentDetail.getSeason())
-                .weather(getCalendarMomentDetail.getWeather())
-                .date(getCalendarMomentDetail.getDate())
-                .friendList(getCalendarMomentDetail.getFriendList())
-                .place(getCalendarMomentDetail.getPlace())
-                .placeNickname(getCalendarMomentDetail.getPlaceNickname())
-                .emotion(getCalendarMomentDetail.getEmotion())
-                .imageURL(getCalendarMomentDetail.getImageUrl())
-                .record(getCalendarMomentDetail.getRecord())
-                .build();
+
     }
     
     //오늘의 나 디테일
 
-    public GetCalendarTodayDetailRes getCalendarTodayDetail(String year,String month,String day){
+    public GetCalendarTodayDetailRes getCalendarTodayDetail(String year,String month,String day) throws BaseException{
 
 
         String startTime;
@@ -304,29 +310,34 @@ public class CalendarService {
 
 
 
-        Post getCalendarTodayDetail=calendarRepository.findByMonthYearDay(startTime,endTime,1);
+        try{
 
-        //null값일때 처리
-        if(getCalendarTodayDetail==null){
+            Post getCalendarTodayDetail=calendarRepository.findByMonthYearDay(startTime,endTime,1);
+
+            if(getCalendarTodayDetail==null){
+                return GetCalendarTodayDetailRes.builder()
+                        .track("")
+                        .artist("")
+                        .videoID("")
+                        .lyrics("")
+                        .emotion("")
+                        .imageURL("")
+                        .build();
+            }
             return GetCalendarTodayDetailRes.builder()
-                    .track("")
-                    .artist("")
-                    .videoID("")
-                    .lyrics("")
-                    .emotion("")
-                    .imageURL("")
+                    .track(getCalendarTodayDetail.getMusic().getTrack())
+                    .artist(getCalendarTodayDetail.getMusic().getArtist())
+                    .videoID(getCalendarTodayDetail.getMusic().getVideoIdx())
+                    .lyrics(getCalendarTodayDetail.getLyrics())
+                    .emotion(getCalendarTodayDetail.getEmotion())
+                    .imageURL(getCalendarTodayDetail.getImageUrl())
                     .build();
+        }
+        catch(NullPointerException e){
+            throw new NullPointerException(e.getMessage());
         }
 
 
-        return GetCalendarTodayDetailRes.builder()
-                .track(getCalendarTodayDetail.getMusic().getTrack())
-                .artist(getCalendarTodayDetail.getMusic().getArtist())
-                .videoID(getCalendarTodayDetail.getMusic().getVideoIdx())
-                .lyrics(getCalendarTodayDetail.getLyrics())
-                .emotion(getCalendarTodayDetail.getEmotion())
-                .imageURL(getCalendarTodayDetail.getImageUrl())
-                .build();
 
     }
 

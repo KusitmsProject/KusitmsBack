@@ -2,6 +2,7 @@ package com.example.demo.src.controller;
 
 
 
+import com.example.demo.src.dto.response.BaseException;
 import com.example.demo.src.dto.response.GetSpotifyRes;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.src.dto.response.GetYouTubeRes;
@@ -50,30 +51,42 @@ public class MusicController {
 
     @Operation(summary = "spotify원본 api", description = "/bring/spotify?track={track이름}")
     @GetMapping("/spotify")
-    public BaseResponse<Paging<Track>>searchTrack(@RequestParam("track")String track){
+    public BaseResponse<Paging<Track>>searchTrack(@RequestParam("track")String track) throws BaseException{
 
-        String token=spotifyToken.getAccessToken();
-        Paging<Track> trackList=searchTrack.searchTracks(token,track);
-        return new BaseResponse<>(trackList);
+        try{
+            String token=spotifyToken.getAccessToken();
+            Paging<Track> trackList=searchTrack.searchTracks(token,track);
+            return new BaseResponse<>(trackList);
+        }catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
     }
 
     @Operation(summary = "track,trackIdx,artist만 페이징 개수만큼 ", description = "/bring/spotify/track?track={track이름}")
     @GetMapping("/spotify/track")
-    public BaseResponse<List<GetSpotifyRes>> parsingSearchTrack(@RequestParam("track")String track) throws IOException {
+    public BaseResponse<List<GetSpotifyRes>> parsingSearchTrack(@RequestParam("track")String track) throws IOException, BaseException {
 
-        List<Music> musicList=musicService.parsingSearchTrack(track);
-        List<GetSpotifyRes>getSpotifyDtos=musicList.stream()
-                .map(GetSpotifyRes::getSpotifyDto).collect(Collectors.toList());
-        return new BaseResponse<>(getSpotifyDtos);
+        try{
+            List<Music> musicList=musicService.parsingSearchTrack(track);
+            List<GetSpotifyRes>getSpotifyDtos=musicList.stream()
+                    .map(GetSpotifyRes::getSpotifyDto).collect(Collectors.toList());
+            return new BaseResponse<>(getSpotifyDtos);
+        }catch (BaseException e){
+            return  new BaseResponse<>(e.getStatus());
+        }
 
     }
 
     // 가사 받아오는 api
     @Operation(summary = "가사호출  ", description = "/bring/spotify/lyrics?trackid={스포티파이trackIdx}")
     @GetMapping("/spotify/lyrics")
-    public BaseResponse<List<String>> searchLyrics(@RequestParam("trackid")String trackid) throws IOException {
+    public BaseResponse<List<String>> searchLyrics(@RequestParam("trackid")String trackid) throws IOException,BaseException {
 
-        return new BaseResponse<>(musicService.searchLyrics(trackid));
+        try{
+            return new BaseResponse<>(musicService.searchLyrics(trackid));
+        }catch (BaseException e){
+            return  new BaseResponse<>(e.getStatus());
+        }
 
     }
 
@@ -81,12 +94,17 @@ public class MusicController {
     //유튜브 videoId 받아오는 api
     @Operation(summary = "유튜브 videoID 받아오기  ", description = "/bring/youtube?track={노래이름}&artist={가수이름}")
     @GetMapping("/youtube")
-    public BaseResponse<List<GetYouTubeRes>>searchVideoId(@RequestParam(value="track")String track,@RequestParam(value="artist")String artist) {
+    public BaseResponse<List<GetYouTubeRes>>searchVideoId(@RequestParam(value="track")String track,@RequestParam(value="artist")String artist) throws BaseException {
 
-        String searchQuery = track.concat(" ").concat(artist);
-        List<GetYouTubeRes> getYouTubeResList = youtubeService.youTubeSearch(track,artist,searchQuery, 1);
+        try{
+            String searchQuery = track.concat(" ").concat(artist);
+            List<GetYouTubeRes> getYouTubeResList = youtubeService.youTubeSearch(track,artist,searchQuery, 1);
+            return new BaseResponse<>(getYouTubeResList);
+        }catch(BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
 
-        return new BaseResponse<>(getYouTubeResList);
+
     }
 
 

@@ -2,6 +2,7 @@ package com.example.demo.src.service;
 
 
 
+import com.example.demo.src.dto.response.BaseException;
 import com.example.demo.src.entity.Music;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -25,7 +26,7 @@ public class MusicService {
     String realTrack="";
     String trackIdx="";
 
-    public List<Music> parsingSearchTrack(String track) throws IOException {
+    public List<Music> parsingSearchTrack(String track) throws IOException,BaseException {
         //track을 인코딩 해야함
         String encodeData="";
         encodeData = URLEncoder.encode(track, "UTF-8");
@@ -101,7 +102,7 @@ public class MusicService {
 
     }
 
-    public List<String> searchLyrics(String trackIdx) throws IOException {
+    public List<String> searchLyrics(String trackIdx) throws IOException, BaseException {
         String lyricURL=String.format("https://spotify-lyric-api.herokuapp.com/?trackid=%s",trackIdx);
         URL url2 = new URL(lyricURL);
         HttpURLConnection connection = (HttpURLConnection) url2.openConnection();

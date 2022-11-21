@@ -1,6 +1,7 @@
 package com.example.demo.src.spotify;
 
 
+import com.example.demo.src.dto.response.BaseException;
 import com.example.demo.src.service.MusicService;
 import com.neovisionaries.i18n.CountryCode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class SearchTrack {
 
 
 
-    public static Paging<Track> searchTracks(String accessToken,String track) {
+    public static Paging<Track> searchTracks(String accessToken,String track) throws BaseException {
 
 
 

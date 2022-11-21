@@ -1,6 +1,7 @@
 package com.example.demo.src.service;
 
 import com.example.demo.config.secret.Secret;
+import com.example.demo.src.dto.response.BaseException;
 import com.example.demo.src.dto.response.GetYouTubeRes;
 import com.example.demo.src.entity.Music;
 import com.example.demo.src.repository.MusicRepository;
@@ -54,7 +55,7 @@ public class YoutubeService {
         }).setApplicationName("youtube-cmdline-search-sample").build();
     }
 
-    public static List<GetYouTubeRes> youTubeSearch(String track,String artist,String searchQuery, int maxSearch) {
+    public static List<GetYouTubeRes> youTubeSearch(String track,String artist,String searchQuery, int maxSearch) throws BaseException {
         String queryTerm = searchQuery;
         //log.info("Starting YouTube search... " +queryTerm);
         List<GetYouTubeRes> rvalue = new ArrayList<GetYouTubeRes>();
