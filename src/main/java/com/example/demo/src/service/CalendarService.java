@@ -32,7 +32,7 @@ public class CalendarService {
 
     }
 
-    public List<GetCalendarMomentRes>getMomentExist(String year,String month){
+    public List<GetCalendarMomentRes>getMomentExist(String year,String month) {
 
         List<GetCalendarMomentRes> getCalendarMomentResList=new ArrayList<>();
 
@@ -259,6 +259,7 @@ public class CalendarService {
                     .date(LocalDate.now())
                     .friendList(new ArrayList<>())
                     .place("")
+                    .placeNickname("")
                     .emotion("")
                     .imageURL("")
                     .record("")
@@ -273,6 +274,7 @@ public class CalendarService {
                 .date(getCalendarMomentDetail.getDate())
                 .friendList(getCalendarMomentDetail.getFriendList())
                 .place(getCalendarMomentDetail.getPlace())
+                .placeNickname(getCalendarMomentDetail.getPlaceNickname())
                 .emotion(getCalendarMomentDetail.getEmotion())
                 .imageURL(getCalendarMomentDetail.getImageUrl())
                 .record(getCalendarMomentDetail.getRecord())

@@ -35,7 +35,7 @@ public class CalendarController {
     // 쿼리에서 반환값이 0 이면 null을 세팅하고
     // 아니면 imageURL을 뱉자
     @GetMapping("/calendar/moment/exists")
-    public BaseResponse<List<GetCalendarMomentRes>> getMomentExist(@RequestParam(value="year")String year,@RequestParam(value="month") String month){
+    public BaseResponse<List<GetCalendarMomentRes>> getMomentExist(@RequestParam(value="year")String year,@RequestParam(value="month") String month)  {
 
         List<GetCalendarMomentRes>getMomentExistList=calendarService.getMomentExist(year,month);
         return new BaseResponse<>(getMomentExistList);
