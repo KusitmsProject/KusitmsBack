@@ -17,4 +17,7 @@ import java.util.List;
 @Getter
 public class PostPostingRes {
     private Long postIdx;
+    private String place; // 장소명
+    private String x; // 경도
+    private String y; // 위도
 }
