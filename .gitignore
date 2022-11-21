@@ -39,3 +39,4 @@ out/
 src/main/resources/application-aws.yml
 src/main/java/com/example/demo/config/secret/Secret.java
 src/main/resources/weather.properties
+src/main/resources/kakao.properties
