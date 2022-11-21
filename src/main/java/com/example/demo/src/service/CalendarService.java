@@ -1,10 +1,10 @@
 package com.example.demo.src.service;
 
 
+import com.example.demo.config.BaseResponseStatus;
 import com.example.demo.src.dto.response.*;
 import com.example.demo.src.entity.Post;
 import com.example.demo.src.repository.CalendarRepository;
-import com.example.demo.src.repository.CalendarRepositoryCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -225,11 +225,17 @@ public class CalendarService {
     }
 
     //그때의 나 디테일
-    public GetCalendarMomentDetailRes getCalendarMomentDetail(String year,String month,String day){
+    public GetCalendarMomentDetailRes getCalendarMomentDetail(String year, String month, String day) throws BaseException {
 
 
         String startTime;
         String endTime;
+
+        //월 validation
+        if(Integer.parseInt(month)>=1&&Integer.parseInt(month)<=9){
+            String zero="0";
+            month=zero.concat(month);
+        }
         if(Integer.parseInt(day)>=1&&Integer.parseInt(day)<=9){
 
             startTime=year.concat("-").concat(month).concat("-0").concat(day);
@@ -239,18 +245,33 @@ public class CalendarService {
             endTime=year.concat("-").concat(month).concat("-").concat(day);
         }
 
-        //월 validation
-        if(Integer.parseInt(month)>=1&&Integer.parseInt(month)<=9){
-            month="0".concat(month);
-        }
+
 
         Post getCalendarMomentDetail=calendarRepository.findByMonthYearDay(startTime,endTime,0);
 
+
+        //null값일때 처리
+        if(getCalendarMomentDetail==null){
+            return GetCalendarMomentDetailRes.builder()
+                    .track("")
+                    .season("")
+                    .weather(new ArrayList<>())
+                    .date(LocalDate.now())
+                    .friendList(new ArrayList<>())
+                    .place("")
+                    .emotion("")
+                    .imageURL("")
+                    .record("")
+                    .build();
+        }
+
         return GetCalendarMomentDetailRes.builder()
                 .track(getCalendarMomentDetail.getMusic().getTrack())
+                .artist(getCalendarMomentDetail.getMusic().getArtist())
                 .season(getCalendarMomentDetail.getSeason())
                 .weather(getCalendarMomentDetail.getWeather())
                 .date(getCalendarMomentDetail.getDate())
+                .friendList(getCalendarMomentDetail.getFriendList())
                 .place(getCalendarMomentDetail.getPlace())
                 .emotion(getCalendarMomentDetail.getEmotion())
                 .imageURL(getCalendarMomentDetail.getImageUrl())
@@ -265,6 +286,11 @@ public class CalendarService {
 
         String startTime;
         String endTime;
+
+        //월 validation
+        if(Integer.parseInt(month)>=1&&Integer.parseInt(month)<=9){
+            month="0".concat(month);
+        }
         if(Integer.parseInt(day)>=1&&Integer.parseInt(day)<=9){
 
             startTime=year.concat("-").concat(month).concat("-0").concat(day);
@@ -274,15 +300,26 @@ public class CalendarService {
             endTime=year.concat("-").concat(month).concat("-").concat(day);
         }
 
-        //월 validation
-        if(Integer.parseInt(month)>=1&&Integer.parseInt(month)<=9){
-            month="0".concat(month);
-        }
+
 
         Post getCalendarTodayDetail=calendarRepository.findByMonthYearDay(startTime,endTime,1);
 
+        //null값일때 처리
+        if(getCalendarTodayDetail==null){
+            return GetCalendarTodayDetailRes.builder()
+                    .track("")
+                    .artist("")
+                    .videoID("")
+                    .lyrics("")
+                    .emotion("")
+                    .imageURL("")
+                    .build();
+        }
+
+
         return GetCalendarTodayDetailRes.builder()
                 .track(getCalendarTodayDetail.getMusic().getTrack())
+                .artist(getCalendarTodayDetail.getMusic().getArtist())
                 .videoID(getCalendarTodayDetail.getMusic().getVideoIdx())
                 .lyrics(getCalendarTodayDetail.getLyrics())
                 .emotion(getCalendarTodayDetail.getEmotion())

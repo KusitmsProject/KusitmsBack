@@ -8,6 +8,7 @@ import com.example.demo.src.service.EmotionService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -28,6 +29,8 @@ public class EmotionController {
             return new BaseResponse<>(getSearchEmotionRes);
         } catch (BaseException e) {
             return new BaseResponse<>(e.getStatus());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -39,6 +42,8 @@ public class EmotionController {
             return new BaseResponse<>(getSearchTrackRes);
         } catch (BaseException e) {
             return new BaseResponse<>(e.getStatus());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

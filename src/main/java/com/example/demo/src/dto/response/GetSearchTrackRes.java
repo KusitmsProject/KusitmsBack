@@ -24,6 +24,8 @@ public class GetSearchTrackRes {
     private String artist; // 가수
 
     private String track; // 곡 제목
+    
+    private String lyrics;// 가사 4줄
 
     private String emotion; // 감정
 
