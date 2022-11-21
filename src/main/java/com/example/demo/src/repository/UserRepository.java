@@ -11,4 +11,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     public User findByKakaoEmail(String kakaoEmail);
     public User findByUserIdx(Long userIdx);
+
+    public User findByPassword(String password);
 }

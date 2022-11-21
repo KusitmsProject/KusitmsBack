@@ -24,20 +24,26 @@ public class PostService {
     private final MusicRepository musicRepository;
     private final KakaomapService kakaomapService;
 
+    private final JwtService jwtService;
+
     private static String kakao_apikey;
 
     @Value("${apikey}")
     public void setApiKey(String key) {kakao_apikey = key;}
 
     @Autowired
-    public PostService(UserRepository userRepository, PostRepository postRepository, MusicRepository musicRepository, KakaomapService kakaomapService){
+    public PostService(UserRepository userRepository, PostRepository postRepository, MusicRepository musicRepository, KakaomapService kakaomapService, JwtService jwtService){
         this.userRepository = userRepository;
         this.postRepository = postRepository;
         this.musicRepository = musicRepository;
         this.kakaomapService = kakaomapService;
+        this.jwtService = jwtService;
     }
 
     public PostPostingRes register(PostPostingReq postPostingReq) throws BaseException {
+
+        //jwt로 유저 인덱스 추가
+        Long userIdx= jwtService.getUserIdx();
 
         // track으로 찾아온 Music 의 artist와 artist로 찾아온 Music의 artist가 같으면 저장
         List<Music> findByTrack = musicRepository.findByTrack(postPostingReq.getTrack());
@@ -50,7 +56,7 @@ public class PostService {
         List<String> coordinates = kakaomapService.getCoordinates(postPostingReq.getPlace());
 
         Post post = Post.builder()
-                .user(userRepository.findByUserIdx(postPostingReq.getUserIdx()))
+                .user(userRepository.findByUserIdx(userIdx))
                 .date(postPostingReq.getDate())
                 .emotion(postPostingReq.getEmotion())
                 .music(music)

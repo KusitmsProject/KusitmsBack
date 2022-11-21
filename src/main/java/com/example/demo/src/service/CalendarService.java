@@ -32,7 +32,7 @@ public class CalendarService {
 
     }
 
-    public List<GetCalendarMomentRes>getMomentExist(String year,String month) throws BaseException{
+    public List<GetCalendarMomentRes>getMomentExist(String year,String month,Long userIdx) throws BaseException{
 
         List<GetCalendarMomentRes> getCalendarMomentResList=new ArrayList<>();
 
@@ -75,7 +75,7 @@ public class CalendarService {
             String start=localStartTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             String end=localEndTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-            int num=calendarRepository.getMomentExist(start,end);
+            int num=calendarRepository.getMomentExist(start,end,userIdx);
 
             System.out.println(num);
             if(num==0){
@@ -83,7 +83,7 @@ public class CalendarService {
                 getCalendarMomentResList.add(getCalendarMomentRes);
 
             }else if(num==1){
-                Post post=calendarRepository.findByMonthYearDay(stdDay,stdDay,0);
+                Post post=calendarRepository.findByMonthYearDay(stdDay,stdDay,0,userIdx);
                 GetCalendarMomentRes getCalendarMomentRes=GetCalendarMomentRes.getCalendarMomentRes(post);
                 getCalendarMomentResList.add(getCalendarMomentRes);
             }
@@ -94,7 +94,7 @@ public class CalendarService {
 
     }
 
-    public List<GetCalendarTodayRes> getTodayExist(String year,String month) throws BaseException{
+    public List<GetCalendarTodayRes> getTodayExist(String year,String month,Long userIdx) throws BaseException{
         List<GetCalendarTodayRes> getCalendarTodayResList=new ArrayList<>();
 
 
@@ -135,7 +135,7 @@ public class CalendarService {
             String start=localStartTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             String end=localEndTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-            int num=calendarRepository.getTodayExist(start,end);
+            int num=calendarRepository.getTodayExist(start,end,userIdx);
 
 
             if(num==0){
@@ -143,7 +143,7 @@ public class CalendarService {
                 getCalendarTodayResList.add(getCalendarTodayRes);
 
             }else if(num==1){
-                Post post=calendarRepository.findByMonthYearDay(stdDay,stdDay,1);
+                Post post=calendarRepository.findByMonthYearDay(stdDay,stdDay,1,userIdx);
                 GetCalendarTodayRes getCalendarTodayRes=GetCalendarTodayRes.getCalendarTodayRes(post); // 문제임
                 getCalendarTodayResList.add(getCalendarTodayRes);
             }
@@ -153,7 +153,7 @@ public class CalendarService {
     }
 
 
-    public List<GetCalendarMomentRes> getCalendarMomentView(String year,String month) throws BaseException{
+    public List<GetCalendarMomentRes> getCalendarMomentView(String year,String month,Long userIdx) throws BaseException{
 
 
         //날짜 validation
@@ -178,7 +178,7 @@ public class CalendarService {
         String endDate=year.concat("-").concat(month).concat("-").concat(Integer.toString(endDay));
 
 
-        List<Post> getCalendarMomentList=calendarRepository.findByMonthAndYear(startDate,endDate,0);
+        List<Post> getCalendarMomentList=calendarRepository.findByMonthAndYear(startDate,endDate,0,userIdx);
         
         //DTO 형태로 변환해주기
 
@@ -188,7 +188,7 @@ public class CalendarService {
         
     }
 
-    public List<GetCalendarTodayRes> getCalendarTodayView(String year,String month) throws BaseException{
+    public List<GetCalendarTodayRes> getCalendarTodayView(String year,String month,Long userIdx) throws BaseException{
 
 
 
@@ -214,7 +214,7 @@ public class CalendarService {
         String endDate=year.concat("-").concat(month).concat("-").concat(Integer.toString(endDay));
 
 
-        List<Post> getCalendarTodayList=calendarRepository.findByMonthAndYear(startDate,endDate,1);
+        List<Post> getCalendarTodayList=calendarRepository.findByMonthAndYear(startDate,endDate,1,userIdx);
 
         //DTO 형태로 변환해주기
 
@@ -225,7 +225,7 @@ public class CalendarService {
     }
 
     //그때의 나 디테일
-    public GetCalendarMomentDetailRes getCalendarMomentDetail(String year, String month, String day) throws BaseException {
+    public GetCalendarMomentDetailRes getCalendarMomentDetail(String year, String month, String day,Long userIdx) throws BaseException {
 
 
         String startTime;
@@ -247,7 +247,7 @@ public class CalendarService {
 
 
         try{
-            Post getCalendarMomentDetail=calendarRepository.findByMonthYearDay(startTime,endTime,0);
+            Post getCalendarMomentDetail=calendarRepository.findByMonthYearDay(startTime,endTime,0,userIdx);
 
 
             //null값일때 처리
@@ -289,7 +289,7 @@ public class CalendarService {
     
     //오늘의 나 디테일
 
-    public GetCalendarTodayDetailRes getCalendarTodayDetail(String year,String month,String day) throws BaseException{
+    public GetCalendarTodayDetailRes getCalendarTodayDetail(String year,String month,String day,Long userIdx) throws BaseException{
 
 
         String startTime;
@@ -312,7 +312,7 @@ public class CalendarService {
 
         try{
 
-            Post getCalendarTodayDetail=calendarRepository.findByMonthYearDay(startTime,endTime,1);
+            Post getCalendarTodayDetail=calendarRepository.findByMonthYearDay(startTime,endTime,1,userIdx);
 
             if(getCalendarTodayDetail==null){
                 return GetCalendarTodayDetailRes.builder()
