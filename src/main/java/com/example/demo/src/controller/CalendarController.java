@@ -4,6 +4,7 @@ package com.example.demo.src.controller;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.src.dto.response.*;
 import com.example.demo.src.service.CalendarService;
+import com.example.demo.src.service.JwtService;
 import com.example.demo.src.service.WeatherService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,9 +21,12 @@ public class CalendarController {
     private final CalendarService calendarService;
     private final WeatherService weatherService;
 
-    public CalendarController(CalendarService calendarService, WeatherService weatherService) {
+    private final JwtService jwtService;
+
+    public CalendarController(CalendarService calendarService, WeatherService weatherService, JwtService jwtService) {
         this.calendarService = calendarService;
         this.weatherService = weatherService;
+        this.jwtService = jwtService;
     }
 
     // youngmin
@@ -48,14 +52,24 @@ public class CalendarController {
     @GetMapping("/calendar/moment/exists")
     public BaseResponse<List<GetCalendarMomentRes>> getMomentExist(@RequestParam(value="year")String year,@RequestParam(value="month") String month) throws BaseException {
 
-        List<GetCalendarMomentRes>getMomentExistList=calendarService.getMomentExist(year,month);
-        return new BaseResponse<>(getMomentExistList);
+        try{
+            Long userIdx=jwtService.getUserIdx();
+            List<GetCalendarMomentRes>getMomentExistList=calendarService.getMomentExist(year,month,userIdx);
+            return new BaseResponse<>(getMomentExistList);
+        }catch(BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
     }
     @GetMapping("/calendar/today/exists")
     public BaseResponse<List<GetCalendarTodayRes>> getTodayExist(@RequestParam(value="year")String year,@RequestParam(value="month") String month) throws BaseException {
 
-        List<GetCalendarTodayRes>getTodayExistList=calendarService.getTodayExist(year,month); //여기가 문제
-        return new BaseResponse<>(getTodayExistList);
+        try{
+            Long userIdx= jwtService.getUserIdx();
+            List<GetCalendarTodayRes>getTodayExistList=calendarService.getTodayExist(year,month,userIdx); //여기가 문제
+            return new BaseResponse<>(getTodayExistList);
+        }catch(BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
     }
 
     
@@ -64,11 +78,16 @@ public class CalendarController {
     public BaseResponse<List<GetCalendarMomentRes>> getCalendarMomentView(@RequestParam(value="year")String year,@RequestParam(value="month") String month) throws BaseException {
 
 
-        List<GetCalendarMomentRes> getCalendarMomentRes=calendarService.getCalendarMomentView(year,month);
+       try{
+           Long userIdx= jwtService.getUserIdx();
+           List<GetCalendarMomentRes> getCalendarMomentRes=calendarService.getCalendarMomentView(year,month,userIdx);
 
 
 
-        return new BaseResponse<>(getCalendarMomentRes);
+           return new BaseResponse<>(getCalendarMomentRes);
+       }catch(BaseException e){
+           return new BaseResponse<>(e.getStatus());
+       }
 
     }
 
@@ -79,7 +98,9 @@ public class CalendarController {
     @GetMapping("/calendar/today")
     public BaseResponse<List<GetCalendarTodayRes>> getCalendarTodayView(@RequestParam(value="year")String year,@RequestParam(value="month") String month) throws BaseException {
         try{
-            List<GetCalendarTodayRes> getCalendarTodayRes=calendarService.getCalendarTodayView(year,month);
+
+            Long userIdx= jwtService.getUserIdx();
+            List<GetCalendarTodayRes> getCalendarTodayRes=calendarService.getCalendarTodayView(year,month,userIdx);
 
             return new BaseResponse<>(getCalendarTodayRes);
         }catch (BaseException e){
@@ -94,7 +115,10 @@ public class CalendarController {
     @GetMapping("/calendar/moment/detail")
     public BaseResponse<GetCalendarMomentDetailRes>getCalendarMomentDetail(@RequestParam(value="year")String year,@RequestParam(value="month")String month,@RequestParam(value="day")String day) throws BaseException {
         try{
-            GetCalendarMomentDetailRes getCalendarMomentDetailRes=calendarService.getCalendarMomentDetail(year,month,day);
+
+            Long userIdx= jwtService.getUserIdx();
+            System.out.println(userIdx);
+            GetCalendarMomentDetailRes getCalendarMomentDetailRes=calendarService.getCalendarMomentDetail(year,month,day,userIdx);
 
             return new BaseResponse<>(getCalendarMomentDetailRes);
         }catch (BaseException e){
@@ -113,7 +137,9 @@ public class CalendarController {
     public BaseResponse <GetCalendarTodayDetailRes>getCalendarTodayDetail(@RequestParam(value="year")String year, @RequestParam(value="month")String month, @RequestParam(value="day")String day) throws BaseException {
 
         try{
-            GetCalendarTodayDetailRes getCalendarTodayDetailRes=calendarService.getCalendarTodayDetail(year,month,day);
+
+            Long userIdx= jwtService.getUserIdx();
+            GetCalendarTodayDetailRes getCalendarTodayDetailRes=calendarService.getCalendarTodayDetail(year,month,day,userIdx);
 
 
 

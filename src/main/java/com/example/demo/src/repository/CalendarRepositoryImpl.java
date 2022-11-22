@@ -36,9 +36,9 @@ public class CalendarRepositoryImpl implements  CalendarRepositoryCustom {
 
     // 그때의 나 캘린더 뷰 데이터 있는지 없는지 조회
     @Override
-    public int getMomentExist(String startTime,String endTime){
-        String sql="SELECT exists(select * from POST where (createdAt between ? and ?) and POST.options=0) ";
-        Object[] params={startTime,endTime};
+    public int getMomentExist(String startTime,String endTime,Long userIdx){
+        String sql="SELECT exists(select * from POST where (createdAt between ? and ?) and POST.options=0 and userIdx=?) ";
+        Object[] params={startTime,endTime,userIdx};
 
         return this.template.queryForObject(sql,params,int.class);
 
@@ -47,9 +47,9 @@ public class CalendarRepositoryImpl implements  CalendarRepositoryCustom {
     //오늘의 나 캘린더 뷰 데이터 있는지 없는지 조회
 
     @Override
-    public int getTodayExist(String startTime,String endTime){
-        String sql="SELECT exists(select * from POST where (createdAt between ? and ?) and POST.options=1 )";
-        Object[] params={startTime,endTime};
+    public int getTodayExist(String startTime,String endTime,Long userIdx){
+        String sql="SELECT exists(select * from POST where (createdAt between ? and ?) and POST.options=1 and userIdx=?)";
+        Object[] params={startTime,endTime,userIdx};
 
         return this.template.queryForObject(sql,params,int.class);
 
@@ -59,7 +59,7 @@ public class CalendarRepositoryImpl implements  CalendarRepositoryCustom {
 
     // 서로 다른 두 날짜 사이를 비교할 때 
     @Override
-    public List<Post> findByMonthAndYear(String startDate, String endDate,int options){
+    public List<Post> findByMonthAndYear(String startDate, String endDate,int options,Long userIdx){
         QPost post= QPost.post;
 
 
@@ -75,7 +75,7 @@ public class CalendarRepositoryImpl implements  CalendarRepositoryCustom {
                 .from(post)
                 .where(
 
-                        post.options.eq(options), post.createdAt.between(localStartTime,localEndTime)
+                        post.options.eq(options), post.createdAt.between(localStartTime,localEndTime),post.user.userIdx.eq(userIdx)
                 )
                 .fetch();
 
@@ -87,7 +87,7 @@ public class CalendarRepositoryImpl implements  CalendarRepositoryCustom {
 
     @Override
 
-    public Post findByMonthYearDay(String startTime,String endTime,int options){
+    public Post findByMonthYearDay(String startTime,String endTime,int options,Long userIdx){
 
         LocalDate startTime1=LocalDate.parse(startTime);
         LocalDate endTime1=LocalDate.parse(endTime);
@@ -105,7 +105,7 @@ public class CalendarRepositoryImpl implements  CalendarRepositoryCustom {
                 .from(post)
                 .where(
 
-                        post.options.eq(options), post.createdAt.between(localStartTime,localEndTime)
+                        post.options.eq(options), post.createdAt.between(localStartTime,localEndTime),post.user.userIdx.eq(userIdx)
                 )
                 .fetchOne();
 

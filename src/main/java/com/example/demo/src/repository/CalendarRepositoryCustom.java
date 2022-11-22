@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface CalendarRepositoryCustom {
 
-    List<Post> findByMonthAndYear(String startDate, String endDate,int options);
+    List<Post> findByMonthAndYear(String startDate, String endDate,int options,Long userIdx);
 
-    Post findByMonthYearDay(String startTime,String endTime,int options);
+    Post findByMonthYearDay(String startTime,String endTime,int options,Long userIdx);
 
-    int getMomentExist(String startTime,String endTime);
+    int getMomentExist(String startTime,String endTime,Long userIdx);
 
-    int getTodayExist(String startTime,String endTime);
+    int getTodayExist(String startTime,String endTime,Long userIdx);
 
 
 
