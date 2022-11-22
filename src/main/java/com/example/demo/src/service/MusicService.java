@@ -32,6 +32,7 @@ public class MusicService {
         encodeData = URLEncoder.encode(track, "UTF-8");
 
         URL=String.format("http://3.34.31.255:8081/bring/spotify?track=%s",encodeData);
+        //URL=String.format("http://localhost:8080/bring/spotify?track=%s",encodeData);
 
 
         System.out.println(URL);
@@ -68,7 +69,7 @@ public class MusicService {
 
 
         //페이징을 3개라 가정
-        for(int i=0;i<1;i++){
+        for(int i=0;i<4;i++){
             JsonObject tracks= items.get(i).getAsJsonObject();
             trackIdx=tracks.get("id").getAsString();
             realTrack=tracks.get("name").getAsString();
