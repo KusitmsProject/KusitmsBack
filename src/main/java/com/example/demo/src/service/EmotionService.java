@@ -45,10 +45,10 @@ public class EmotionService {
         this.musicRepository = musicRepository;
     }
 
-    public List<GetSearchEmotionRes> searchForEmotion(String userIdx, String emotion) throws BaseException, IOException {
+    public List<GetSearchEmotionRes> searchForEmotion(Long userIdx, String emotion) throws BaseException, IOException {
         List<GetSearchEmotionRes> result = new ArrayList<>();
 
-        User user = userRepository.findByUserIdx(Long.parseLong(userIdx));
+        User user = userRepository.findByUserIdx(userIdx);
         List<Post> postList = postRepository.findAllByUserAndEmotion(user, emotion);
 
         for(int i = 0; i < postList.size(); i++){
@@ -141,10 +141,10 @@ public class EmotionService {
         return result;
     }
 
-    public List<GetSearchTrackRes> searchForTrack(String userIdx, String musicIdx) throws BaseException, IOException {
+    public List<GetSearchTrackRes> searchForTrack(Long userIdx, String musicIdx) throws BaseException, IOException {
         List<GetSearchTrackRes> result = new ArrayList<>();
 
-        User user = userRepository.findByUserIdx(Long.parseLong(userIdx));
+        User user = userRepository.findByUserIdx(userIdx);
         Music music = musicRepository.findByMusicIdx(Long.parseLong(musicIdx));
 
         //우선 스포티파이 id 가져온다
@@ -234,10 +234,10 @@ public class EmotionService {
         return result;
     }
 
-    public List<GetSearchTrackRes> search(String userIdx, String input) throws BaseException{
+    public List<GetSearchTrackRes> search(Long userIdx, String input) throws BaseException{
         List<GetSearchTrackRes> result = new ArrayList<>();
 
-        User user = userRepository.findByUserIdx(Long.parseLong(userIdx)); // 유저 검색
+        User user = userRepository.findByUserIdx(userIdx); // 유저 검색
         List<Post> userPostList = postRepository.findAllByUser(user); // 해당 user post 검색
         List<Music> musicList = musicRepository.findAllByArtistLikeOrTrackLike("%" + input + "%", "%" + input + "%"); // 음악, 아티스트 검색
 

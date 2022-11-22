@@ -5,6 +5,7 @@ import com.example.demo.src.dto.response.BaseException;
 import com.example.demo.src.dto.response.GetSearchEmotionRes;
 import com.example.demo.src.dto.response.GetSearchTrackRes;
 import com.example.demo.src.service.EmotionService;
+import com.example.demo.src.service.JwtService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,15 +17,19 @@ import java.util.List;
 public class EmotionController {
 
     private final EmotionService emotionService;
+    private final JwtService jwtService;
 
-    public EmotionController(EmotionService emotionService) {
+    public EmotionController(EmotionService emotionService, JwtService jwtService) {
+
         this.emotionService = emotionService;
+        this.jwtService = jwtService;
     }
 
     @ApiOperation("해당 감정 목록 조회하기")
     @GetMapping("/searchEmotion")
-    public BaseResponse<List<GetSearchEmotionRes>> searchEmotion(@RequestParam(value = "userIdx") String userIdx, @RequestParam(value = "emotion") String emotion) {
+    public BaseResponse<List<GetSearchEmotionRes>> searchEmotion(@RequestParam(value = "emotion") String emotion) {
         try{
+            Long userIdx=jwtService.getUserIdx();
             List<GetSearchEmotionRes> getSearchEmotionRes = emotionService.searchForEmotion(userIdx, emotion);
             return new BaseResponse<>(getSearchEmotionRes);
         } catch (BaseException e) {
@@ -36,8 +41,9 @@ public class EmotionController {
 
     @ApiOperation("해당 노래 목록 조회하기")
     @GetMapping("/searchTrack")
-    public BaseResponse<List<GetSearchTrackRes>> searchTrack(@RequestParam(value = "userIdx") String userIdx, @RequestParam(value = "musicIdx") String musicIdx) {
+    public BaseResponse<List<GetSearchTrackRes>> searchTrack(@RequestParam(value = "musicIdx") String musicIdx) {
         try{
+            Long userIdx=jwtService.getUserIdx();
             List<GetSearchTrackRes> getSearchTrackRes = emotionService.searchForTrack(userIdx, musicIdx);
             return new BaseResponse<>(getSearchTrackRes);
         } catch (BaseException e) {
@@ -49,8 +55,9 @@ public class EmotionController {
 
     @ApiOperation("감정보관함 노래 검색")
     @GetMapping("/search")
-    public BaseResponse<List<GetSearchTrackRes>> search(@RequestParam(value = "userIdx") String userIdx, @RequestParam(value = "input") String input) {
+    public BaseResponse<List<GetSearchTrackRes>> search(@RequestParam(value = "input") String input) {
         try{
+            Long userIdx=jwtService.getUserIdx();
             List<GetSearchTrackRes> getSearchTrackRes = emotionService.search(userIdx, input);
             return new BaseResponse<>(getSearchTrackRes);
         } catch (BaseException e) {
