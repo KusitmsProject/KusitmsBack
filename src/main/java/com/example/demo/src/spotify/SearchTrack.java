@@ -28,7 +28,7 @@ public class SearchTrack {
                 .build();
 
         SearchTracksRequest searchTracksRequest = spotifyApi.searchTracks(track)
-                .limit(3) //페이징
+                .limit(4) //페이징
           .market(CountryCode.KR)
 //          .limit(10)
 //          .offset(0)
