@@ -8,4 +8,5 @@ import lombok.Data;
 public class GetUserIdxRes {
 
     private Long userIdx;
+    private String kakao_nickname;
 }

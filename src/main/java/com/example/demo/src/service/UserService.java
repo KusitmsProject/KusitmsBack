@@ -1,15 +1,12 @@
 package com.example.demo.src.service;
 
-import com.example.demo.config.secret.Secret;
 import com.example.demo.src.dto.request.PostLoginReq;
-import com.example.demo.src.dto.response.GetUserIdxRes;
-import com.example.demo.src.dto.response.PostLoginRes;
+import com.example.demo.src.dto.response.*;
+import com.example.demo.src.entity.Post;
+import com.example.demo.src.repository.CalendarRepository;
 import com.example.demo.src.repository.UserRepository;
-import com.example.demo.src.utils.AES128;
 
-import com.example.demo.src.dto.response.PostUserRes;
 import com.example.demo.src.dto.request.PostUserReq;
-import com.example.demo.src.dto.response.BaseException;
 import com.example.demo.src.entity.User;
 import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +24,18 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
 
+    private final CalendarRepository calendarRepository;
+
+
+
 
     @Autowired
-    public UserService(UserRepository userRepository,JwtService jwtService){
+    public UserService(UserRepository userRepository, JwtService jwtService, CalendarRepository calendarRepository){
         this.userRepository=userRepository;
         this.jwtService=jwtService;
 
+
+        this.calendarRepository = calendarRepository;
     }
 
     public long saveUser(PostUserReq postUserDto) throws BaseException {
@@ -128,8 +131,31 @@ public class UserService implements UserDetailsService {
 
     public GetUserIdxRes findUserIdx() throws BaseException{
         Long userIdx= jwtService.getUserIdx();
+        User user=userRepository.findByUserIdx(userIdx);
         return GetUserIdxRes.builder()
                 .userIdx(userIdx)
+                .kakao_nickname(user.getKakaoNickname())
+                .build();
+
+    }
+
+    //작년의 오늘
+
+    public GetLastYearRes findLastYear(String year,String month,String day,Long userIdx)throws BaseException{
+
+        year=Integer.toString(Integer.parseInt(year)-1);
+        String startTime=year.concat("-").concat(month).concat("-").concat(day);
+        String endTime=year.concat("-").concat(month).concat("-").concat(day);
+
+        String date=year.concat(".").concat(month).concat(".").concat(day);
+        Post post=calendarRepository.findByMonthYearDay(startTime,endTime,1,userIdx);
+
+        System.out.println(post.getMusic().getTrack());
+        return GetLastYearRes.builder()
+                .artist(post.getMusic().getArtist())
+                .track(post.getMusic().getTrack())
+                .friendList(post.getFriendList())
+                .date(date)
                 .build();
 
     }
