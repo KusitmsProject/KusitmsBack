@@ -1,12 +1,10 @@
 package com.example.demo.src.controller;
 
 import com.example.demo.src.dto.request.PostLoginReq;
-import com.example.demo.src.dto.response.GetUserIdxRes;
-import com.example.demo.src.dto.response.PostLoginRes;
-import com.example.demo.src.dto.response.PostUserRes;
+import com.example.demo.src.dto.response.*;
 import com.example.demo.src.dto.request.PostUserReq;
-import com.example.demo.src.dto.response.BaseException;
 import com.example.demo.config.BaseResponse;
+import com.example.demo.src.service.JwtService;
 import com.example.demo.src.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +16,11 @@ public class UserController {
 
     @Autowired
     UserService userService;
+    private final JwtService jwtService;
+
+    public UserController(JwtService jwtService) {
+        this.jwtService = jwtService;
+    }
 
     // 회원가입 
     @Operation(summary = "회원가입", description = "/bring/signup")
@@ -57,6 +60,20 @@ public class UserController {
 
             GetUserIdxRes getUserIdxRes=userService.findUserIdx();
             return  new BaseResponse<>(getUserIdxRes);
+        }catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+    //작년의 오늘
+
+    @GetMapping("/home/lastYear")
+    public BaseResponse<GetLastYearRes>findLastYear(@RequestParam("year")String year,@RequestParam("month")String month,@RequestParam("day")String day)throws  BaseException{
+        try{
+            Long userIdx=jwtService.getUserIdx();
+            GetLastYearRes getLastYearRes=userService.findLastYear(year,month,day,userIdx);
+            return new BaseResponse<>(getLastYearRes);
+
         }catch (BaseException e){
             return new BaseResponse<>(e.getStatus());
         }
