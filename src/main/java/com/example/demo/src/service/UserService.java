@@ -40,18 +40,9 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findByKakaoEmail(postUserDto.getKakao_email());
 
         if (user == null) {
-            String pwd;
-            try {
-                // 암호화: postUserReq에서 제공받은 비밀번호를 보안을 위해 암호화시켜 DB에 저장
-                // ex) password123 -> dfhsjfkjdsnj4@!$!@chdsnjfwkenjfnsjfnjsd.fdsfaifsadjfjaf
-                pwd = new AES128(Secret.USER_INFO_PASSWORD_KEY).encrypt(postUserDto.getPassword()); // 암호화코드
 
-            } catch (Exception ignored) { // 암호화가 실패하였을 경우 에러 발생
-                throw new BaseException(PASSWORD_ENCRYPTION_ERROR);
-            }
             user = (User.builder()
                     .kakaoId(postUserDto.getKakao_id())
-                    .password(pwd)
                     .kakaoEmail(postUserDto.getKakao_email())
                     .kakaoNickname(postUserDto.getKakao_nickname())
                     .profileImgUrl(postUserDto.getProfile_img_url())
@@ -115,21 +106,12 @@ public class UserService implements UserDetailsService {
     @Builder
     public PostLoginRes loginUser(PostLoginReq postLoginReq)throws BaseException{
 
-        // 이메일로 받아온 user과 password로 받아온 user와 같은지
-        String password;
-        try {
-            // 암호화: postUserReq에서 제공받은 비밀번호를 보안을 위해 암호화시켜 DB에 저장
-            // ex) password123 -> dfhsjfkjdsnj4@!$!@chdsnjfwkenjfnsjfnjsd.fdsfaifsadjfjaf
-            password = new AES128(Secret.USER_INFO_PASSWORD_KEY).encrypt(postLoginReq.getPassword()); // 암호화코드
 
-        } catch (Exception ignored) { // 암호화가 실패하였을 경우 에러 발생
-            throw new BaseException(PASSWORD_ENCRYPTION_ERROR);
-        }
-        User userByPassword=userRepository.findByPassword(password);
+
         User userByEmail=userRepository.findByKakaoEmail(postLoginReq.getEmail());
 
         // 유저가 존재하지 않는다는거 -> 로그인 에러
-        if(userByPassword!=userByEmail){
+        if(userByEmail==null){
             throw new BaseException(NO_USER_EXISTS);
         }
 
