@@ -7,6 +7,5 @@ import lombok.Data;
 public class PostLoginReq {
 
     private String email;
-    private String password;
     private String kakao_nickname;
 }
