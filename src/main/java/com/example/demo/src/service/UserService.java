@@ -97,10 +97,9 @@ public class UserService implements UserDetailsService {
 
         return PostUserRes.builder()
                 .userIdx(user.getUserIdx())
-                .kakao_id(user.getKakaoId())
+
                 .kakao_nickname(user.getKakaoNickname())
-                .profile_img_url(user.getProfileImgUrl())
-                .gender(user.getGender())
+
                 .jwt(jwt)
                 .build();
 
@@ -113,9 +112,17 @@ public class UserService implements UserDetailsService {
 
         User userByEmail=userRepository.findByKakaoEmail(postLoginReq.getEmail());
 
-        // 유저가 존재하지 않는다는거 -> 로그인 에러
+        // 유저가 존재하지 않는다는거 -> 유저 저장하기
         if(userByEmail==null){
-            throw new BaseException(NO_USER_EXISTS);
+            userByEmail=User.builder()
+                    .kakaoEmail(postLoginReq.getEmail())
+                    .kakaoNickname(postLoginReq.getKakao_nickname())
+                    .build();
+
+            userRepository.save(userByEmail);
+
+
+
         }
 
 
