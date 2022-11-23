@@ -25,7 +25,9 @@ public class GetSearchEmotionRes {
 
     private String track; // 곡 제목
     
-    private  String lyrics;//가사 4줄
+    private String lyrics;//가사 4줄
+
+    private String emotion; // 감정
 
     private Integer options; // 그때의 나인지 오늘의 나인지
 }
