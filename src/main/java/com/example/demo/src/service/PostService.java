@@ -1,8 +1,11 @@
 package com.example.demo.src.service;
 
+import com.example.demo.src.dto.request.PostMomentPostingReq;
 import com.example.demo.src.dto.request.PostPostingReq;
+import com.example.demo.src.dto.request.PostTodayPostingReq;
 import com.example.demo.src.dto.response.BaseException;
 import com.example.demo.src.dto.response.PostPostingRes;
+import com.example.demo.src.dto.response.PostTodayPostingRes;
 import com.example.demo.src.entity.Music;
 import com.example.demo.src.entity.Post;
 import com.example.demo.src.repository.MusicRepository;
@@ -13,6 +16,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,6 +74,95 @@ public class PostService {
                 .record(postPostingReq.getRecord())
                 .friendList(postPostingReq.getFriendList())
                 .options(postPostingReq.getOptions())
+                .build();
+
+        Post savedPost = postRepository.save(post);
+        // 장소 검색 실패 시
+        if(coordinates.size() == 0){
+            PostPostingRes postPostingRes = PostPostingRes.builder()
+                    .postIdx(savedPost.getPostIdx())
+                    .x("")
+                    .y("")
+                    .build();
+            return postPostingRes;
+        }
+
+        PostPostingRes postPostingRes = PostPostingRes.builder()
+                .postIdx(savedPost.getPostIdx())
+                .x(coordinates.get(0))
+                .y(coordinates.get(1))
+                .build();
+
+        return postPostingRes;
+    }
+
+    //오늘의 나 기록
+    public PostTodayPostingRes postToday(PostTodayPostingReq postTodayPostingReq) throws BaseException{
+        Long userIdx= jwtService.getUserIdx();
+
+        // track으로 찾아온 Music 의 artist와 artist로 찾아온 Music의 artist가 같으면 저장
+        List<Music> findByTrack = musicRepository.findByTrack(postTodayPostingReq.getTrack());
+        List<Music>ans=findByTrack.stream().filter(
+                o->o.getArtist().equals(postTodayPostingReq.getArtist())
+        ).collect(Collectors.toList());
+        Music music=ans.get(0);//filter한 값 중 가장 앞에 값을 music에 넣자
+
+
+
+        Post post = Post.builder()
+                .user(userRepository.findByUserIdx(userIdx))
+                .emotion(postTodayPostingReq.getEmotion())
+                .music(music)
+                .lyrics(postTodayPostingReq.getLyrics())
+                .imageUrl(postTodayPostingReq.getImageUrl())
+                .options(1)
+                .weather(new ArrayList<>())
+                .season("")
+                .placeNickname("")
+                .place("")
+                .record("")
+                .friendList(new ArrayList<>())
+                .date(LocalDate.now())
+                .build();
+
+        Post savedPost = postRepository.save(post);
+
+        return PostTodayPostingRes.builder()
+                .postIdx(savedPost.getPostIdx())
+                .build();
+    }
+
+    //그때의 나 기록
+
+    public PostPostingRes postMoment(PostMomentPostingReq postMomentPostingReq) throws BaseException {
+
+        //jwt로 유저 인덱스 추가
+        Long userIdx= jwtService.getUserIdx();
+
+        // track으로 찾아온 Music 의 artist와 artist로 찾아온 Music의 artist가 같으면 저장
+        List<Music> findByTrack = musicRepository.findByTrack(postMomentPostingReq.getTrack());
+        List<Music>ans=findByTrack.stream().filter(
+                o->o.getArtist().equals(postMomentPostingReq.getArtist())
+        ).collect(Collectors.toList());
+        Music music=ans.get(0);//filter한 값 중 가장 앞에 값을 music에 넣자
+
+        // kakaomap api로 위도, 경도 찾기
+        List<String> coordinates = kakaomapService.getCoordinates(postMomentPostingReq.getPlace());
+
+        Post post = Post.builder()
+                .user(userRepository.findByUserIdx(userIdx))
+                .date(postMomentPostingReq.getDate())
+                .emotion(postMomentPostingReq.getEmotion())
+                .music(music)
+                .weather(postMomentPostingReq.getWeather())
+                .season(postMomentPostingReq.getSeason())
+                .lyrics(postMomentPostingReq.getLyrics())
+                .placeNickname(postMomentPostingReq.getPlaceNickname())
+                .place(postMomentPostingReq.getPlace())
+                .imageUrl(postMomentPostingReq.getImageUrl())
+                .record(postMomentPostingReq.getRecord())
+                .friendList(postMomentPostingReq.getFriendList())
+                .options(0)
                 .build();
 
         Post savedPost = postRepository.save(post);
