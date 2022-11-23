@@ -39,6 +39,20 @@ public class EmotionController {
         }
     }
 
+    @ApiOperation("감정목록 랜덤 반환")
+    @GetMapping("/randomEmotion")
+    public BaseResponse<List<GetSearchEmotionRes>> randomEmotion() {
+        try{
+            Long userIdx=jwtService.getUserIdx();
+            List<GetSearchEmotionRes> getSearchEmotionRes = emotionService.searchRandomEmotion(userIdx);
+            return new BaseResponse<>(getSearchEmotionRes);
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @ApiOperation("해당 노래 목록 조회하기")
     @GetMapping("/searchTrack")
     public BaseResponse<List<GetSearchTrackRes>> searchTrack(@RequestParam(value = "musicIdx") String musicIdx) {
