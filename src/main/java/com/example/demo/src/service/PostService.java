@@ -1,8 +1,10 @@
 package com.example.demo.src.service;
 
+
 import com.example.demo.src.dto.request.PostPostingReq;
 import com.example.demo.src.dto.response.BaseException;
 import com.example.demo.src.dto.response.PostPostingRes;
+
 import com.example.demo.src.entity.Music;
 import com.example.demo.src.entity.Post;
 import com.example.demo.src.repository.MusicRepository;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -90,4 +93,6 @@ public class PostService {
 
         return postPostingRes;
     }
+
+
 }

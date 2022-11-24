@@ -11,8 +11,10 @@ import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.specification.Paging;
 import se.michaelthelin.spotify.model_objects.specification.Track;
 import se.michaelthelin.spotify.requests.data.search.simplified.SearchTracksRequest;
+import se.michaelthelin.spotify.requests.data.tracks.GetTrackRequest;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 @Service
 public class SearchTrack {
@@ -28,7 +30,7 @@ public class SearchTrack {
                 .build();
 
         SearchTracksRequest searchTracksRequest = spotifyApi.searchTracks(track)
-                .limit(4) //페이징
+                .limit(5) //페이징
           .market(CountryCode.KR)
 //          .limit(10)
 //          .offset(0)
@@ -47,6 +49,31 @@ public class SearchTrack {
             System.out.println("Error: " + e.getMessage());
         }
         return trackPaging;
+    }
+
+
+    public static Track searchTrackById(String accessToken,String trackIdx){
+        SpotifyApi spotifyApi = new SpotifyApi.Builder()
+                .setAccessToken(accessToken)
+                .build();
+
+        GetTrackRequest getTrackRequest = spotifyApi.getTrack(trackIdx).build();
+
+        Track track=null;
+
+        try {
+            track = getTrackRequest.execute();
+
+
+
+
+            return track;
+
+        } catch (IOException | SpotifyWebApiException | org.apache.hc.core5.http.ParseException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return track;
+
     }
 
 

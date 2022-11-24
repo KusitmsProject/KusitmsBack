@@ -55,7 +55,7 @@ public class YoutubeService {
         }).setApplicationName("youtube-cmdline-search-sample").build();
     }
 
-    public static List<GetYouTubeRes> youTubeSearch(String track,String artist,String searchQuery, int maxSearch) throws BaseException {
+    public static List<GetYouTubeRes> youTubeSearch(String track,String artist,String trackIdx,String searchQuery, int maxSearch) throws BaseException {
         String queryTerm = searchQuery;
         //log.info("Starting YouTube search... " +queryTerm);
         List<GetYouTubeRes> rvalue = new ArrayList<GetYouTubeRes>();
@@ -104,6 +104,7 @@ public class YoutubeService {
 
         Music music=Music.builder()
                         .track(track)
+                        .trackIdx(trackIdx)
                         .artist(artist)
                         .videoIdx(videoId)
                         .build();

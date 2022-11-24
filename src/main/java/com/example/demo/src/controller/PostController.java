@@ -1,5 +1,6 @@
 package com.example.demo.src.controller;
 
+
 import com.example.demo.src.dto.request.PostPostingReq;
 import com.example.demo.src.dto.response.BaseException;
 import com.example.demo.config.BaseResponse;
@@ -30,5 +31,7 @@ public class PostController {
             return new BaseResponse<>(e.getStatus());
         }
     }
+
+
 
 }

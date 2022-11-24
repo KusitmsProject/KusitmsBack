@@ -3,17 +3,22 @@ package com.example.demo.src.service;
 
 
 import com.example.demo.src.dto.response.BaseException;
+import com.example.demo.src.dto.response.GetSpotifyRes;
 import com.example.demo.src.entity.Music;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.springframework.stereotype.Service;
+import se.michaelthelin.spotify.model_objects.specification.ArtistSimplified;
+import se.michaelthelin.spotify.model_objects.specification.Track;
 
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MusicService {
@@ -22,71 +27,46 @@ public class MusicService {
     private static final String GET = "GET";
     private static final String USER_AGENT = "Mozilla/5.0";
 
-    String artist="";
-    String realTrack="";
-    String trackIdx="";
 
-    public List<Music> parsingSearchTrack(String track) throws IOException,BaseException {
-        //track을 인코딩 해야함
-        String encodeData="";
-        encodeData = URLEncoder.encode(track, "UTF-8");
+    public List<Music> parsingSearchTrack(Track[] trackArray) throws IOException,BaseException {
 
-        URL=String.format("http://3.34.31.255:8081/bring/spotify?track=%s",encodeData);
-        //URL=String.format("http://localhost:8080/bring/spotify?track=%s",encodeData);
+        // 여기부터 service단으로 이동
 
+        //노래 이름만 담기
+        List<String>trackName= Arrays.stream(trackArray).map(
+                o->o.getName()
+        ).collect(Collectors.toList());
 
-        System.out.println(URL);
-
-        URL url = new URL(URL);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-        connection.setRequestMethod(GET);
-        connection.setRequestProperty("User-Agent", USER_AGENT);
-
-        int responseCode = connection.getResponseCode();
-        System.out.println(responseCode);
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        StringBuffer stringBuffer = new StringBuffer();
-        String inputLine;
-
-        while ((inputLine = bufferedReader.readLine()) != null)  {
-            stringBuffer.append(inputLine);
+        //아티스트 이름만 담기
+        List<ArtistSimplified[]>artistSimplifiedList= Arrays.stream(trackArray).map(
+                o->o.getArtists()
+        ).collect(Collectors.toList());
+        List<ArtistSimplified> artistSimplified=new ArrayList<>();
+        for(int i=0;i<4;i++){
+            artistSimplified.add(artistSimplifiedList.get(i)[0]);
         }
-        bufferedReader.close();
+        List<String>artistList=artistSimplified.stream().map(
+                o->o.getName()
+        ).collect(Collectors.toList());
 
-        String response = stringBuffer.toString();
+        //trackIdx만 담기
+        List<String>trackIdxList= Arrays.stream(trackArray).map(
+                o->o.getId()
+        ).collect(Collectors.toList());
 
 
-        //Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
-        JsonParser jsonParser=new JsonParser();
-        JsonElement element= jsonParser.parse(response);
-        JsonObject result=element.getAsJsonObject().get("result").getAsJsonObject();
-
-        JsonArray items= result.get("items").getAsJsonArray();
-        //여기서 foreach 돌리면 될 듯 List<>한다면
 
         List<Music> spotifyList = new ArrayList<>();
 
 
         //페이징을 3개라 가정
         for(int i=0;i<4;i++){
-            JsonObject tracks= items.get(i).getAsJsonObject();
-            trackIdx=tracks.get("id").getAsString();
-            realTrack=tracks.get("name").getAsString();
 
-
-            JsonObject album=tracks.getAsJsonObject("album");
-            JsonArray artists=album.getAsJsonArray("artists");
-            JsonObject artistsObject= (JsonObject) artists.get(0);
-            artist=artistsObject.get("name").getAsString();
-
-            System.out.println(artist);
-            System.out.println(realTrack);
 
             Music music=Music.builder()
-                            .trackIdx(trackIdx)
-                            .track(realTrack)
-                            .artist(artist)
+                            .trackIdx(trackIdxList.get(i))
+                            .track(trackName.get(i))
+                            .artist(artistList.get(i))
                             .build();
 
            spotifyList.add(music);
@@ -105,8 +85,8 @@ public class MusicService {
 
     public List<String> searchLyrics(String trackIdx) throws IOException, BaseException {
         String lyricURL=String.format("https://spotify-lyric-api.herokuapp.com/?trackid=%s",trackIdx);
-        URL url2 = new URL(lyricURL);
-        HttpURLConnection connection = (HttpURLConnection) url2.openConnection();
+        URL url = new URL(lyricURL);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
         connection.setRequestMethod(GET);
         connection.setRequestProperty("User-Agent", USER_AGENT);
