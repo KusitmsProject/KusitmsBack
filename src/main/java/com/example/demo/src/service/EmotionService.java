@@ -238,8 +238,10 @@ public class EmotionService {
         return result;
     }
 
-    public List<GetSearchTrackRes> searchForTrack(Long userIdx, String musicIdx) throws BaseException, IOException {
-        List<GetSearchTrackRes> result = new ArrayList<>();
+    public List<List<GetSearchTrackRes>> searchForTrack(Long userIdx, String musicIdx) throws BaseException, IOException {
+        List<List<GetSearchTrackRes>> result = new ArrayList<>();
+        List<GetSearchTrackRes> moment = new ArrayList<>();
+        List<GetSearchTrackRes> today = new ArrayList<>();
 
         User user = userRepository.findByUserIdx(userIdx);
         Music music = musicRepository.findByMusicIdx(Long.parseLong(musicIdx));
@@ -326,8 +328,13 @@ public class EmotionService {
                     .emotion(postList.get(i).getEmotion())
                     .options(postList.get(i).getOptions())
                     .build();
-            result.add((getSearchTrackRes));
+            if(getSearchTrackRes.getOptions() == 0)
+                moment.add(getSearchTrackRes);
+            else if(getSearchTrackRes.getOptions() == 1)
+                today.add(getSearchTrackRes);
         }
+        result.add(moment);
+        result.add(today);
         return result;
     }
 
