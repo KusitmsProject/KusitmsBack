@@ -17,10 +17,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import se.michaelthelin.spotify.model_objects.specification.ArtistSimplified;
 import se.michaelthelin.spotify.model_objects.specification.Paging;
 import se.michaelthelin.spotify.model_objects.specification.Track;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,25 +52,17 @@ public class MusicController {
 
 
 
-    @Operation(summary = "spotify원본 api", description = "/bring/spotify?track={track이름}")
-    @GetMapping("/spotify")
-    public BaseResponse<Paging<Track>>searchTrack(@RequestParam("track")String track) throws BaseException{
-
-        try{
-            String token=spotifyToken.getAccessToken();
-            Paging<Track> trackList=searchTrack.searchTracks(token,track);
-            return new BaseResponse<>(trackList);
-        }catch (BaseException e){
-            return new BaseResponse<>(e.getStatus());
-        }
-    }
+   // spotify track 파싱해서 받아오기
 
     @Operation(summary = "track,trackIdx,artist만 페이징 개수만큼 ", description = "/bring/spotify/track?track={track이름}")
     @GetMapping("/spotify/track")
     public BaseResponse<List<GetSpotifyRes>> parsingSearchTrack(@RequestParam("track")String track) throws IOException, BaseException {
 
         try{
-            List<Music> musicList=musicService.parsingSearchTrack(track);
+            String token=spotifyToken.getAccessToken();
+            Paging<Track> trackList=searchTrack.searchTracks(token,track);
+            Track[] trackArray =trackList.getItems();
+            List<Music> musicList=musicService.parsingSearchTrack(trackArray);
             List<GetSpotifyRes>getSpotifyDtos=musicList.stream()
                     .map(GetSpotifyRes::getSpotifyDto).collect(Collectors.toList());
             return new BaseResponse<>(getSpotifyDtos);
@@ -94,11 +89,11 @@ public class MusicController {
     //유튜브 videoId 받아오는 api
     @Operation(summary = "유튜브 videoID 받아오기  ", description = "/bring/youtube?track={노래이름}&artist={가수이름}")
     @GetMapping("/youtube")
-    public BaseResponse<List<GetYouTubeRes>>searchVideoId(@RequestParam(value="track")String track,@RequestParam(value="artist")String artist) throws BaseException {
+    public BaseResponse<List<GetYouTubeRes>>searchVideoId(@RequestParam(value="track")String track,@RequestParam(value="artist")String artist,@RequestParam(value="trackIdx")String trackIdx) throws BaseException {
 
         try{
             String searchQuery = track.concat(" ").concat(artist);
-            List<GetYouTubeRes> getYouTubeResList = youtubeService.youTubeSearch(track,artist,searchQuery, 1);
+            List<GetYouTubeRes> getYouTubeResList = youtubeService.youTubeSearch(track,artist,trackIdx,searchQuery, 1);
             return new BaseResponse<>(getYouTubeResList);
         }catch(BaseException e){
             return new BaseResponse<>(e.getStatus());
