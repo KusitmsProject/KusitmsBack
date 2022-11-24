@@ -25,6 +25,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -43,6 +44,104 @@ public class EmotionService {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.musicRepository = musicRepository;
+    }
+
+    public List<GetSearchEmotionRes> searchRandomEmotion (Long userIdx) throws BaseException, IOException {
+        List<GetSearchEmotionRes> result = new ArrayList<>();
+
+        String emotions[] = {"HAPPY", "LOVELY", "ANGRY", "SAD", "EXPLODE", "TIRED"};
+        // 감정 6개씩 하나하나
+        for(int i = 0; i < 6; i++){
+            User user = userRepository.findByUserIdx(userIdx);
+            List<Post> postList = postRepository.findAllByUserAndEmotion(user, emotions[i]);
+            if(postList.size() == 0) continue; // 없으면 건너뜀
+            Collections.shuffle(postList); // 게시물 중 하나 랜덤 추출
+
+            // 해당 post의 가수, 제목 찾기
+            Music music = postList.get(0).getMusic();
+
+            //우선 스포티파이 id 가져온다
+            String encodeData="";
+            encodeData = URLEncoder.encode(music.getTrack(), "UTF-8");
+
+            URL=String.format("http://3.34.31.255:8081/bring/spotify/track?track=%s",encodeData);
+
+
+            URL url = new URL(URL);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+            connection.setRequestMethod(GET);
+            connection.setRequestProperty("User-Agent", USER_AGENT);
+
+            int responseCode = connection.getResponseCode();
+            System.out.println(responseCode);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuffer stringBuffer = new StringBuffer();
+            String inputLine;
+
+            while ((inputLine = bufferedReader.readLine()) != null)  {
+                stringBuffer.append(inputLine);
+            }
+            bufferedReader.close();
+
+            String response = stringBuffer.toString();
+
+            //Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
+            JsonParser jsonParser=new JsonParser();
+            JsonElement element= jsonParser.parse(response);
+            JsonArray results=element.getAsJsonObject().get("result").getAsJsonArray();
+            JsonObject targetItem=results.get(0).getAsJsonObject();
+            String trackIdx=targetItem.get("trackIdx").getAsString();
+
+            // 가사 api에 id 넣는다
+            String encodeData2="";
+            encodeData2 = URLEncoder.encode(trackIdx, "UTF-8");
+
+            URL=String.format("http://3.34.31.255:8081/bring/spotify/lyrics?trackid=%s",encodeData2);
+
+
+            URL url2 = new URL(URL);
+            HttpURLConnection connection2 = (HttpURLConnection) url2.openConnection();
+
+            connection2.setRequestMethod(GET);
+            connection2.setRequestProperty("User-Agent", USER_AGENT);
+
+
+            BufferedReader bufferedReader2 = new BufferedReader(new InputStreamReader(connection2.getInputStream()));
+            StringBuffer stringBuffer2 = new StringBuffer();
+            String inputLine2;
+
+            while ((inputLine2 = bufferedReader2.readLine()) != null)  {
+                stringBuffer2.append(inputLine2);
+            }
+            bufferedReader2.close();
+
+            String response2 = stringBuffer2.toString();
+
+            JsonParser jsonParser2=new JsonParser();
+            JsonElement element2= jsonParser2.parse(response2);
+            JsonArray results2=element2.getAsJsonObject().get("result").getAsJsonArray();
+
+            // 4줄씩 파싱을 진행한다.
+            String lyrics=null;
+            for(int num=0;num<4;num++){
+                lyrics+=results2.get(num).getAsString().concat("\n");
+            }
+
+            GetSearchEmotionRes getSearchEmotionRes = GetSearchEmotionRes.builder()
+                    .postIdx(postList.get(0).getPostIdx())
+                    .musicIdx(music.getMusicIdx())
+                    .date(postList.get(0).getDate())
+                    .artist(music.getArtist())
+                    .track(music.getTrack())
+                    .lyrics(lyrics)
+                    .options(postList.get(0).getOptions())
+                    .emotion(emotions[i])
+                    .build();
+            result.add((getSearchEmotionRes));
+        }
+
+        return result;
     }
 
     public List<GetSearchEmotionRes> searchForEmotion(Long userIdx, String emotion) throws BaseException, IOException {
@@ -123,10 +222,6 @@ public class EmotionService {
                 lyrics+=results2.get(num).getAsString().concat("\n");
             }
 
-
-
-
-
             GetSearchEmotionRes getSearchEmotionRes = GetSearchEmotionRes.builder()
                     .postIdx(postList.get(i).getPostIdx())
                     .musicIdx(music.getMusicIdx())
@@ -135,6 +230,7 @@ public class EmotionService {
                     .track(music.getTrack())
                     .lyrics(lyrics)
                     .options(postList.get(i).getOptions())
+                    .emotion(emotion)
                     .build();
             result.add((getSearchEmotionRes));
         }
