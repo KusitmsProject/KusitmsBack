@@ -46,7 +46,7 @@ public class EmotionService {
         this.musicRepository = musicRepository;
     }
 
-    public List<GetSearchEmotionRes> searchRandomEmotion (Long userIdx) throws BaseException, IOException {
+    public List<GetSearchEmotionRes> searchRandomEmotion(Long userIdx) throws BaseException, IOException {
         List<GetSearchEmotionRes> result = new ArrayList<>();
 
         String emotions[] = {"HAPPY", "LOVELY", "ANGRY", "SAD", "EXPLODE", "TIRED"};
@@ -131,6 +131,7 @@ public class EmotionService {
             GetSearchEmotionRes getSearchEmotionRes = GetSearchEmotionRes.builder()
                     .postIdx(postList.get(0).getPostIdx())
                     .musicIdx(music.getMusicIdx())
+                    .videoId(music.getVideoIdx())
                     .date(postList.get(0).getDate())
                     .artist(music.getArtist())
                     .track(music.getTrack())
