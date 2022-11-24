@@ -55,10 +55,10 @@ public class EmotionController {
 
     @ApiOperation("해당 노래 목록 조회하기")
     @GetMapping("/searchTrack")
-    public BaseResponse<List<GetSearchTrackRes>> searchTrack(@RequestParam(value = "musicIdx") String musicIdx) {
+    public BaseResponse<List<List<GetSearchTrackRes>>> searchTrack(@RequestParam(value = "musicIdx") String musicIdx) {
         try{
             Long userIdx=jwtService.getUserIdx();
-            List<GetSearchTrackRes> getSearchTrackRes = emotionService.searchForTrack(userIdx, musicIdx);
+            List<List<GetSearchTrackRes>> getSearchTrackRes = emotionService.searchForTrack(userIdx, musicIdx);
             return new BaseResponse<>(getSearchTrackRes);
         } catch (BaseException e) {
             return new BaseResponse<>(e.getStatus());

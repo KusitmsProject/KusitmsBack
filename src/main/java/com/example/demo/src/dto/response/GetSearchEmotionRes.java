@@ -29,5 +29,7 @@ public class GetSearchEmotionRes {
 
     private String emotion; // 감정
 
+    private String videoId; // 유튜브 아이디
+
     private Integer options; // 그때의 나인지 오늘의 나인지
 }
