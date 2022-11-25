@@ -132,6 +132,7 @@ public class EmotionService {
                     .track(music.getTrack())
                     .lyrics(lyrics)
                     .options(postList.get(i).getOptions())
+                    .videoId(music.getVideoIdx())
                     .emotion(emotion)
                     .build();
             result.add((getSearchEmotionRes));
