@@ -16,6 +16,7 @@ import java.util.Locale;
 public class GetCalendarMomentDetailRes {
 
     private String track;
+    private String videoId;
     private String artist;
     private String season;
     private List<String> weather;
@@ -31,6 +32,7 @@ public class GetCalendarMomentDetailRes {
 
         return GetCalendarMomentDetailRes.builder()
                 .track(post.getMusic().getTrack())
+                .videoId(post.getMusic().getVideoIdx())
                 .artist(post.getMusic().getArtist())
                 .season(post.getSeason())
                 .weather(post.getWeather())

@@ -254,6 +254,7 @@ public class CalendarService {
             if(getCalendarMomentDetail==null){
                 return GetCalendarMomentDetailRes.builder()
                         .track("")
+                        .videoId("")
                         .season("")
                         .weather(new ArrayList<>())
                         .date(LocalDate.now())
@@ -268,6 +269,7 @@ public class CalendarService {
 
             return GetCalendarMomentDetailRes.builder()
                     .track(getCalendarMomentDetail.getMusic().getTrack())
+                    .videoId(getCalendarMomentDetail.getMusic().getVideoIdx())
                     .artist(getCalendarMomentDetail.getMusic().getArtist())
                     .season(getCalendarMomentDetail.getSeason())
                     .weather(getCalendarMomentDetail.getWeather())
